@@ -1,27 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-	<title></title>
-	<meta name="generator" content="LibreOffice 7.6.4.1 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="00:00:00"/>
-	<style type="text/css">
-		@page { size: 8.27in 11.69in; margin: 0.79in }
-		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
-		pre { background: transparent }
-		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
-		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
-		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
-	</style>
-</head>
-<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot; /&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
-&lt;title&gt;Jersey Mike's Quiz — Deluxe Edition&lt;/title&gt;
-&lt;style&gt;
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jersey Mike's Quiz — Deluxe Edition</title>
+<style>
   /* ========== Design Tokens ========== */
   :root{
     --brand:#d62828;
@@ -133,14 +116,14 @@
   }
   :focus-visible{ outline:3px solid var(--ring); outline-offset:2px; border-radius:12px; }
 
-  input[type=&quot;text&quot;], select{
+  input[type="text"], select{
     flex:1; padding:12px 12px; font-size:16px; color:var(--ink);
     background:rgba(255,255,255,.7);
     border:1.5px solid var(--muted);
     border-radius:12px;
     transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
   }
-  input[type=&quot;text&quot;]:focus, select:focus{
+  input[type="text"]:focus, select:focus{
     border-color: color-mix(in oklab, var(--ui) 60%, white 40%);
     box-shadow: 0 0 0 5px color-mix(in oklab, var(--ui) 20%, transparent 80%);
     background:rgba(255,255,255,.9);
@@ -151,7 +134,7 @@
   .center{ display:grid; place-items:center; text-align:center; gap:14px; min-height:320px; }
   .field{ display:flex; gap:8px; width:100%; }
 
-  /* ========== Q &amp; Answers ========== */
+  /* ========== Q & Answers ========== */
   .question{
     font-weight:800;
     letter-spacing:.2px;
@@ -251,7 +234,7 @@
     border:1px solid var(--border);
   }
   .meter{ height:10px; background:rgba(148,163,184,.2); border-radius:999px; overflow:hidden; flex:1; min-width:180px; border:1px solid var(--border); }
-  .meter &gt; b{ display:block; height:100%;
+  .meter > b{ display:block; height:100%;
     background:linear-gradient(90deg, var(--ok), #eab308, var(--bad));
     width:100%; transform-origin:left center;
   }
@@ -265,100 +248,100 @@
 
   /* Open-ended input row */
   .openbox{ display:flex; gap:8px; margin-top:6px; width:100%; }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;canvas id=&quot;confetti&quot; aria-hidden=&quot;true&quot;&gt;&lt;/canvas&gt;
+</style>
+</head>
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
 
-  &lt;div class=&quot;secret&quot; id=&quot;secret&quot; role=&quot;dialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;secretTitle&quot;&gt;
-    &lt;div class=&quot;badge&quot;&gt;
-      &lt;h3 id=&quot;secretTitle&quot;&gt;🥇 Perfect Menu Master!&lt;/h3&gt;
-      &lt;p&gt;You got every sub right in one try. Legendary run!&lt;/p&gt;
-      &lt;div class=&quot;ach&quot; id=&quot;secretAch&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
-      &lt;button class=&quot;btn&quot; id=&quot;secretClose&quot;&gt;Claim Bragging Rights&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+  <div class="secret" id="secret" role="dialog" aria-modal="true" aria-labelledby="secretTitle">
+    <div class="badge">
+      <h3 id="secretTitle">🥇 Perfect Menu Master!</h3>
+      <p>You got every sub right in one try. Legendary run!</p>
+      <div class="ach" id="secretAch" aria-live="polite"></div>
+      <button class="btn" id="secretClose">Claim Bragging Rights</button>
+    </div>
+  </div>
 
-  &lt;div class=&quot;wrap&quot;&gt;
-    &lt;main class=&quot;app&quot; aria-labelledby=&quot;pageTitle&quot;&gt;
-      &lt;section class=&quot;card&quot; id=&quot;main&quot;&gt;
-        &lt;div class=&quot;flash&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
-        &lt;h1 id=&quot;pageTitle&quot;&gt;Jersey Mike's Quiz&lt;/h1&gt;
-        &lt;p class=&quot;subhead&quot;&gt;
+  <div class="wrap">
+    <main class="app" aria-labelledby="pageTitle">
+      <section class="card" id="main">
+        <div class="flash" aria-hidden="true"></div>
+        <h1 id="pageTitle">Jersey Mike's Quiz</h1>
+        <p class="subhead">
           Pick a mode, enter your name, choose difficulty, and climb the leaderboard.
-          &lt;span class=&quot;score&quot; id=&quot;score&quot; aria-live=&quot;polite&quot;&gt;Score: 0&lt;/span&gt; •
-          &lt;span class=&quot;score&quot; id=&quot;high&quot; aria-live=&quot;polite&quot;&gt;High Score: 0&lt;/span&gt;
-        &lt;/p&gt;
-        &lt;div id=&quot;view&quot; class=&quot;fade-in&quot;&gt;&lt;/div&gt;
-        &lt;p class=&quot;tiny&quot; style=&quot;margin-top:8px;opacity:.8&quot;&gt;
+          <span class="score" id="score" aria-live="polite">Score: 0</span> •
+          <span class="score" id="high" aria-live="polite">High Score: 0</span>
+        </p>
+        <div id="view" class="fade-in"></div>
+        <p class="tiny" style="margin-top:8px;opacity:.8">
           Shortcuts: 1-9 answer • Enter submit/next • F 50/50 • H Hint • S Skip • M Sound
-        &lt;/p&gt;
-      &lt;/section&gt;
+        </p>
+      </section>
 
-      &lt;aside class=&quot;card sidebar&quot; id=&quot;side&quot; aria-labelledby=&quot;lbTitle&quot;&gt;
-        &lt;h2 id=&quot;lbTitle&quot;&gt;
+      <aside class="card sidebar" id="side" aria-labelledby="lbTitle">
+        <h2 id="lbTitle">
           Leaderboard
-          &lt;span class=&quot;filters&quot;&gt;
-            &lt;select id=&quot;fMode&quot; aria-label=&quot;Filter by mode&quot;&gt;
-              &lt;option value=&quot;all&quot;&gt;All&lt;/option&gt;
-              &lt;option value=&quot;mc&quot;&gt;MC&lt;/option&gt;
-              &lt;option value=&quot;open&quot;&gt;Open&lt;/option&gt;
-              &lt;option value=&quot;survival&quot;&gt;Survival&lt;/option&gt;
-              &lt;option value=&quot;marathon&quot;&gt;Marathon&lt;/option&gt;
-              &lt;option value=&quot;real&quot;&gt;REAL QUIZ&lt;/option&gt;
-            &lt;/select&gt;
-            &lt;select id=&quot;fWhen&quot; aria-label=&quot;Filter by time&quot;&gt;
-              &lt;option value=&quot;all&quot;&gt;All-time&lt;/option&gt;
-              &lt;option value=&quot;today&quot;&gt;Today&lt;/option&gt;
-              &lt;option value=&quot;week&quot;&gt;This week&lt;/option&gt;
-            &lt;/select&gt;
-          &lt;/span&gt;
-        &lt;/h2&gt;
-        &lt;div id=&quot;lbWrap&quot; role=&quot;region&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
-        &lt;div class=&quot;tiny&quot; id=&quot;hs&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
-      &lt;/aside&gt;
-    &lt;/main&gt;
-  &lt;/div&gt;
+          <span class="filters">
+            <select id="fMode" aria-label="Filter by mode">
+              <option value="all">All</option>
+              <option value="mc">MC</option>
+              <option value="open">Open</option>
+              <option value="survival">Survival</option>
+              <option value="marathon">Marathon</option>
+              <option value="real">REAL QUIZ</option>
+            </select>
+            <select id="fWhen" aria-label="Filter by time">
+              <option value="all">All-time</option>
+              <option value="today">Today</option>
+              <option value="week">This week</option>
+            </select>
+          </span>
+        </h2>
+        <div id="lbWrap" role="region" aria-live="polite"></div>
+        <div class="tiny" id="hs" aria-live="polite"></div>
+      </aside>
+    </main>
+  </div>
 
-&lt;script&gt;
-(()=&gt; {
+<script>
+(()=> {
   // ===== DATA ===========================================================
   const QUESTIONS = [
-    { number: 1,  name: &quot;BLT&quot; },
-    { number: 2,  name: &quot;Jersey Shore's Favorite&quot; },
-    { number: 3,  name: &quot;Ham &amp; Provolone&quot; },
-    { number: 4,  name: &quot;The Number Four&quot; },
-    { number: 5,  name: &quot;The Super Sub&quot; },
-    { number: 6,  name: &quot;Roast Beef &amp; Provolone&quot; },
-    { number: 7,  name: &quot;Turkey Breast &amp; Provolone&quot; },
-    { number: 8,  name: &quot;Club Sub&quot; },
-    { number: 9,  name: &quot;Club Supreme&quot; },
-    { number: 10, name: &quot;Tuna Fish&quot; },
-    { number: 11, name: &quot;Stickball Special&quot; },
-    { number: 12, name: &quot;Cancun Chicken&quot; },
-    { number: 13, name: &quot;The Original Italian&quot; },
-    { number: 14, name: &quot;The Veggie&quot; },
-    { number: 17, name: &quot;Mike's Famous Philly&quot; },
-    { number: 26, name: &quot;Bacon Ranch Chicken Cheese Steak&quot; },
-    { number: 42, name: &quot;Chipotle Chicken Cheese Steak&quot; },
-    { number: 43, name: &quot;Chipotle Cheese Steak&quot; }
+    { number: 1,  name: "BLT" },
+    { number: 2,  name: "Jersey Shore's Favorite" },
+    { number: 3,  name: "Ham & Provolone" },
+    { number: 4,  name: "The Number Four" },
+    { number: 5,  name: "The Super Sub" },
+    { number: 6,  name: "Roast Beef & Provolone" },
+    { number: 7,  name: "Turkey Breast & Provolone" },
+    { number: 8,  name: "Club Sub" },
+    { number: 9,  name: "Club Supreme" },
+    { number: 10, name: "Tuna Fish" },
+    { number: 11, name: "Stickball Special" },
+    { number: 12, name: "Cancun Chicken" },
+    { number: 13, name: "The Original Italian" },
+    { number: 14, name: "The Veggie" },
+    { number: 17, name: "Mike's Famous Philly" },
+    { number: 26, name: "Bacon Ranch Chicken Cheese Steak" },
+    { number: 42, name: "Chipotle Chicken Cheese Steak" },
+    { number: 43, name: "Chipotle Cheese Steak" }
   ];
 
   // Costs to use power-ups (points/score)
   const COSTS = { fifty: 30, hint: 15, skip: 40 };
 
   // ===== UTIL ===========================================================
-  const rnd = n =&gt; Math.floor(Math.random()*n);
-  const shuffle = arr =&gt; { for(let i=arr.length-1;i&gt;0;i--){ const j=rnd(i+1); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; };
-  const pickK = (arr,k) =&gt; shuffle(arr.slice()).slice(0,k);
-  const el = (tag, attrs={}, text) =&gt; { const n=document.createElement(tag); for(const k in attrs){ n.setAttribute(k, attrs[k]); } if(text!=null) n.textContent=text; return n; };
-  const now = ()=&gt; new Date();
-  const startOfDay = d=&gt; new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
-  const startOfWeek = d=&gt;{ const dd=new Date(d); const day=(dd.getDay()+6)%7; dd.setDate(dd.getDate()-day); dd.setHours(0,0,0,0); return dd.getTime(); };
+  const rnd = n => Math.floor(Math.random()*n);
+  const shuffle = arr => { for(let i=arr.length-1;i>0;i--){ const j=rnd(i+1); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; };
+  const pickK = (arr,k) => shuffle(arr.slice()).slice(0,k);
+  const el = (tag, attrs={}, text) => { const n=document.createElement(tag); for(const k in attrs){ n.setAttribute(k, attrs[k]); } if(text!=null) n.textContent=text; return n; };
+  const now = ()=> new Date();
+  const startOfDay = d=> new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const startOfWeek = d=>{ const dd=new Date(d); const day=(dd.getDay()+6)%7; dd.setDate(dd.getDate()-day); dd.setHours(0,0,0,0); return dd.getTime(); };
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ===== RELAXED KEYWORDS ==============================================
-  const KEYWORDS = new Map(QUESTIONS.map(q=&gt;[q.number, buildKeywords(q.name)]));
+  const KEYWORDS = new Map(QUESTIONS.map(q=>[q.number, buildKeywords(q.name)]));
   function buildKeywords(name){
     const base = norm(name);
     const words = new Set(base.split(' '));
@@ -371,14 +354,14 @@
     if(base.includes('veggie')) keys.add('veggie');
     if(base.includes('tuna')) keys.add('tuna');
     if(base.includes('philly')) keys.add('philly');
-    if(base.includes('chipotle') &amp;&amp; base.includes('chicken')){ keys.add('chipotle chicken'); keys.add('chipotle chicken cheese steak'); }
-    if(base.includes('chipotle') &amp;&amp; !base.includes('chicken')){ keys.add('chipotle'); keys.add('chipotle cheese steak'); }
-    if(base.includes('bacon') &amp;&amp; base.includes('ranch')) keys.add('bacon ranch');
+    if(base.includes('chipotle') && base.includes('chicken')){ keys.add('chipotle chicken'); keys.add('chipotle chicken cheese steak'); }
+    if(base.includes('chipotle') && !base.includes('chicken')){ keys.add('chipotle'); keys.add('chipotle cheese steak'); }
+    if(base.includes('bacon') && base.includes('ranch')) keys.add('bacon ranch');
     if(base.includes('blt')) keys.add('blt');
     if(base.includes('stickball')) keys.add('stickball');
     if(base.includes('super sub')) keys.add('super sub');
     const arr=[...words];
-    for(let i=0;i&lt;arr.length;i++) for(let j=i+1;j&lt;arr.length;j++) keys.add(arr[i]+' '+arr[j]);
+    for(let i=0;i<arr.length;i++) for(let j=i+1;j<arr.length;j++) keys.add(arr[i]+' '+arr[j]);
     return keys;
   }
   function norm(s){ return (s||'').toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim(); }
@@ -392,7 +375,7 @@
     pushName(name){
       const list = this.getNames();
       const clean = name.trim(); if(!clean) return list;
-      const filtered = [clean, ...list.filter(n=&gt;n!==clean)].slice(0,50);
+      const filtered = [clean, ...list.filter(n=>n!==clean)].slice(0,50);
       localStorage.setItem(this.namesKey, JSON.stringify(filtered));
       return filtered;
     },
@@ -400,7 +383,7 @@
     pushScore(entry){
       const board = this.getBoard();
       board.push(entry);
-      board.sort((a,b)=&gt; b.score - a.score || a.time - b.time);
+      board.sort((a,b)=> b.score - a.score || a.time - b.time);
       localStorage.setItem(this.boardKey, JSON.stringify(board.slice(0,200)));
       return board.slice(0,200);
     },
@@ -426,7 +409,7 @@
   const fWhen = document.getElementById('fWhen');
   const secret = document.getElementById('secret');
   const secretAch = document.getElementById('secretAch');
-  document.getElementById('secretClose').addEventListener('click', ()=&gt; secret.classList.remove('show'));
+  document.getElementById('secretClose').addEventListener('click', ()=> secret.classList.remove('show'));
 
   // Sounds
   let soundOn = LS.getSound(); let audioCtx = null;
@@ -436,12 +419,12 @@
       audioCtx = audioCtx||new (window.AudioContext||window.webkitAudioContext)();
       const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
       o.type='sine'; o.frequency.value=freq; o.connect(g); g.connect(audioCtx.destination);
-      g.gain.value=.06; o.start(); setTimeout(()=&gt;o.stop(), dur);
+      g.gain.value=.06; o.start(); setTimeout(()=>o.stop(), dur);
     }catch{}
   }
 
   // Confetti
-  const confetti = (()=&gt; {
+  const confetti = (()=> {
     const cvs = document.getElementById('confetti');
     const ctx = cvs.getContext('2d');
     let W = cvs.width = window.innerWidth; let H = cvs.height = window.innerHeight;
@@ -451,7 +434,7 @@
     function blast(x,y){
       if(prefersReduced) return;
       const N = 140; const parts = [];
-      for(let i=0;i&lt;N;i++){
+      for(let i=0;i<N;i++){
         const ang = Math.random()*Math.PI*2;
         parts.push({ x, y, vx: Math.cos(ang)*(2+Math.random()*5), vy: Math.sin(ang)*(2+Math.random()*5), g: 0.08+Math.random()*0.08, life: 60+Math.random()*40, rot: Math.random()*Math.PI, vr: (Math.random()-.5)*0.3, w: 4+Math.random()*3, h: 6+Math.random()*4, a: 1 });
       }
@@ -461,7 +444,7 @@
         let alive=false;
         for(const p of parts){
           p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--; p.a=Math.max(0,p.life/100);
-          if(p.life&gt;0) alive=true;
+          if(p.life>0) alive=true;
           ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.globalAlpha=p.a; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
         }
         if(alive) rafId=requestAnimationFrame(tick);
@@ -475,20 +458,20 @@
     const board = LS.getBoard();
     const mode = fMode.value; const when = fWhen.value; const nowTime = now();
     const startCut = when==='today' ? startOfDay(nowTime) : when==='week' ? startOfWeek(nowTime) : 0;
-    const filtered = board.filter(e=&gt; (mode==='all' || e.mode===mode) &amp;&amp; (startCut===0 || e.time&gt;=startCut));
-    if(!filtered.length){ lbWrap.innerHTML = '&lt;p class=&quot;tiny&quot;&gt;No scores yet. Be the first!&lt;/p&gt;'; hs.textContent=''; return; }
+    const filtered = board.filter(e=> (mode==='all' || e.mode===mode) && (startCut===0 || e.time>=startCut));
+    if(!filtered.length){ lbWrap.innerHTML = '<p class="tiny">No scores yet. Be the first!</p>'; hs.textContent=''; return; }
     const table = document.createElement('table'); table.className='lb';
-    table.innerHTML = '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Mode&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;';
+    table.innerHTML = '<thead><tr><th>#</th><th>Name</th><th>Mode</th><th>Score</th></tr></thead>';
     const tb = document.createElement('tbody');
-    filtered.slice(0,10).forEach((e,i)=&gt;{
-      const tr = document.createElement('tr'); if(highlightName &amp;&amp; e.name===highlightName) tr.className='me';
-      tr.innerHTML = `&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${e.avatar||'🍞'} ${e.name}&lt;/td&gt;&lt;td&gt;${labelMode(e.mode)}&lt;/td&gt;&lt;td&gt;${e.score}&lt;/td&gt;`; tb.appendChild(tr);
+    filtered.slice(0,10).forEach((e,i)=>{
+      const tr = document.createElement('tr'); if(highlightName && e.name===highlightName) tr.className='me';
+      tr.innerHTML = `<td>${i+1}</td><td>${e.avatar||'🍞'} ${e.name}</td><td>${labelMode(e.mode)}</td><td>${e.score}</td>`; tb.appendChild(tr);
     });
     table.appendChild(tb); lbWrap.replaceChildren(table);
     const top = filtered[0]; hs.textContent = `Best: ${top.name} — ${top.score} (${labelMode(top.mode)})`;
   }
-  fMode.addEventListener('change', ()=&gt;renderLeaderboard());
-  fWhen.addEventListener('change', ()=&gt;renderLeaderboard());
+  fMode.addEventListener('change', ()=>renderLeaderboard());
+  fWhen.addEventListener('change', ()=>renderLeaderboard());
 
   // ===== Menu ===========================================================
   function renderMenu(){
@@ -498,7 +481,7 @@
     view.replaceChildren();
 
     const box = el('div', {class:'center fade-in', role:'region', 'aria-label':'Start menu'});
-    const title = el('div'); title.innerHTML='&lt;h2&gt;Who\'s playing?&lt;/h2&gt;';
+    const title = el('div'); title.innerHTML='<h2>Who\'s playing?</h2>';
 
     const lastNames = LS.getNames().slice(0,10);
     const opts = el('div',{class:'row', style:'width:100%; justify-content:center'});
@@ -508,7 +491,7 @@
     const existingPane = el('div',{id:'existingPane',style:'width:100%; display:none; gap:8px'});
     const nameSelect = el('select',{'aria-label':'Recent names'});
     nameSelect.appendChild(el('option',{value:''}, '-- Select from last 10 --'));
-    lastNames.forEach(n=&gt; nameSelect.appendChild(el('option',{value:n}, n)) );
+    lastNames.forEach(n=> nameSelect.appendChild(el('option',{value:n}, n)) );
     const chooseBtn = el('button',{class:'btn'}, 'Choose');
     existingPane.append(nameSelect, chooseBtn);
 
@@ -520,7 +503,7 @@
     newPane.appendChild(nameFieldWrap);
 
     const modePane = el('div',{style:'width:100%; display:none; margin-top:10px'});
-    const mtitle = el('div'); mtitle.innerHTML='&lt;h3&gt;Choose a Mode&lt;/h3&gt;';
+    const mtitle = el('div'); mtitle.innerHTML='<h3>Choose a Mode</h3>';
     const mc = el('button',{class:'btn'}, '▶ Multiple Choice');
     const oe = el('button',{class:'btn ghost'}, '⌨️ Open-Ended');
     const sur = el('button',{class:'btn ghost'}, '❤️ Survival');
@@ -530,11 +513,11 @@
     const dSelWrap = el('div',{class:'row', style:'margin-top:8px; align-items:center'});
     const dLab = el('div',{},'Difficulty:');
     const dSel = el('select', {'aria-label':'Difficulty'});
-    dSel.innerHTML = '&lt;option value=&quot;easy&quot;&gt;Easy&lt;/option&gt;&lt;option value=&quot;normal&quot; selected&gt;Normal&lt;/option&gt;&lt;option value=&quot;hard&quot;&gt;Hard&lt;/option&gt;';
+    dSel.innerHTML = '<option value="easy">Easy</option><option value="normal" selected>Normal</option><option value="hard">Hard</option>';
     const soundToggle = el('button',{class:'btn ghost'}, `Sound: ${soundOn? 'On':'Off'}`);
     dSelWrap.append(dLab,dSel,soundToggle);
 
-    const lbPreviewTitle = el('div'); lbPreviewTitle.innerHTML = '&lt;p class=&quot;tiny&quot; style=&quot;margin-top:10px&quot;&gt;Live leaderboard preview&lt;/p&gt;';
+    const lbPreviewTitle = el('div'); lbPreviewTitle.innerHTML = '<p class="tiny" style="margin-top:10px">Live leaderboard preview</p>';
     const lbPreview = el('div'); lbPreview.id='lbPreview';
     modePane.append(mtitle, el('div',{class:'row'}, ''), mc, oe, sur, mar, real, dSelWrap, lbPreviewTitle, lbPreview);
 
@@ -547,29 +530,29 @@
     renderLeaderboard();
     lbPreview.replaceChildren(lbWrap.firstChild?.cloneNode(true) || el('div',{},''));
 
-    existingBtn.onclick = ()=&gt;{ existingPane.style.display='grid'; existingBtn.setAttribute('aria-expanded','true'); newPane.style.display='none'; newBtn.setAttribute('aria-expanded','false'); };
-    newBtn.onclick = ()=&gt;{ newPane.style.display='block'; newBtn.setAttribute('aria-expanded','true'); existingPane.style.display='none'; existingBtn.setAttribute('aria-expanded','false'); nameField.focus(); };
+    existingBtn.onclick = ()=>{ existingPane.style.display='grid'; existingBtn.setAttribute('aria-expanded','true'); newPane.style.display='none'; newBtn.setAttribute('aria-expanded','false'); };
+    newBtn.onclick = ()=>{ newPane.style.display='block'; newBtn.setAttribute('aria-expanded','true'); existingPane.style.display='none'; existingBtn.setAttribute('aria-expanded','false'); nameField.focus(); };
 
-    chooseBtn.onclick = ()=&gt;{ const val = nameSelect.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
-    saveNameBtn.onclick = ()=&gt;{ const val = nameField.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
+    chooseBtn.onclick = ()=>{ const val = nameSelect.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
+    saveNameBtn.onclick = ()=>{ const val = nameField.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
 
-    soundToggle.onclick = ()=&gt;{ soundOn=!soundOn; LS.setSound(soundOn); soundToggle.textContent = `Sound: ${soundOn? 'On':'Off'}`; };
+    soundToggle.onclick = ()=>{ soundOn=!soundOn; LS.setSound(soundOn); soundToggle.textContent = `Sound: ${soundOn? 'On':'Off'}`; };
 
-    mc.onclick = ()=&gt; startQuiz('mc', dSel.value);
-    oe.onclick = ()=&gt; startQuiz('open', dSel.value);
-    sur.onclick = ()=&gt; startQuiz('survival', dSel.value);
-    mar.onclick = ()=&gt; startQuiz('marathon', dSel.value);
-    real.onclick = ()=&gt; startQuiz('real', dSel.value);
+    mc.onclick = ()=> startQuiz('mc', dSel.value);
+    oe.onclick = ()=> startQuiz('open', dSel.value);
+    sur.onclick = ()=> startQuiz('survival', dSel.value);
+    mar.onclick = ()=> startQuiz('marathon', dSel.value);
+    real.onclick = ()=> startQuiz('real', dSel.value);
 
-    share.addEventListener('click', ()=&gt;{
+    share.addEventListener('click', ()=>{
       const best = getHighScoreFor(player.name);
-      navigator.clipboard?.writeText(`${player.name||'I'} scored ${best} on Jersey Mike's Quiz!`).then(()=&gt;alert('Copied to clipboard!')).catch(()=&gt;alert('Copy failed.'));
+      navigator.clipboard?.writeText(`${player.name||'I'} scored ${best} on Jersey Mike's Quiz!`).then(()=>alert('Copied to clipboard!')).catch(()=>alert('Copy failed.'));
     });
   }
 
   function setPlayer(name){ player.name = name; player.avatar = pickAvatar(name); LS.pushName(name); highEl.textContent = `High Score: ${getHighScoreFor(name)}`; }
   function pickAvatar(name){ const list=['🥪','🍞','🥖','🍅','🧀','🥓','🥬','🫑','🧅','🍗']; return list[Math.abs(hash(name))%list.length]; }
-  function hash(s){ let h=0; for(let i=0;i&lt;s.length;i++){ h=((h&lt;&lt;5)-h)+s.charCodeAt(i); h|=0; } return h; }
+  function hash(s){ let h=0; for(let i=0;i<s.length;i++){ h=((h<<5)-h)+s.charCodeAt(i); h|=0; } return h; }
 
   // ===== QUIZ ===========================================================
   let currentAnswersEl = null;
@@ -587,8 +570,8 @@
     const order = shuffle(QUESTIONS.slice()); let idx = 0; let lives = mode==='survival' ? 1 : 9999;
 
     function renderQ(){
-      if(mode==='marathon' &amp;&amp; mistakes&gt;=3) return finish(true);
-      if(idx&gt;=order.length){
+      if(mode==='marathon' && mistakes>=3) return finish(true);
+      if(idx>=order.length){
         if(mode==='marathon'){ idx=0; shuffle(order); }
         else return finish(true); // completed set
       }
@@ -604,8 +587,8 @@
       const timer = el('div',{class:'meter'}); const bar = el('b'); timer.appendChild(bar);
       const soundBtn = el('button',{class:'btn ghost', title:'Toggle sound (M)'}, soundOn?'🔊':'🔈');
       const menuBtn = el('button',{class:'btn ghost'}, 'Menu'); // persistent return to menu
-      soundBtn.onclick=()=&gt;{ soundOn=!soundOn; LS.setSound(soundOn); soundBtn.textContent=soundOn?'🔊':'🔈'; };
-      menuBtn.onclick=()=&gt;{ clearTimer(); renderMenu(); };
+      soundBtn.onclick=()=>{ soundOn=!soundOn; LS.setSound(soundOn); soundBtn.textContent=soundOn?'🔊':'🔈'; };
+      menuBtn.onclick=()=>{ clearTimer(); renderMenu(); };
       hud.append(streakEl, coinsEl, pu, timer, soundBtn, menuBtn);
       view.appendChild(hud);
 
@@ -630,26 +613,26 @@
 
       if(mode==='mc' || mode==='survival' || mode==='marathon' || mode==='real'){
         const maxChoices = difficulty==='easy' ? 5 : difficulty==='hard' ? 3 : 4;
-        const others = QUESTIONS.filter(x=&gt;x!==q); const distractors = pickK(others, Math.max(0, maxChoices-1));
-        options = shuffle([q, ...distractors]).map(o=&gt;o.name);
+        const others = QUESTIONS.filter(x=>x!==q); const distractors = pickK(others, Math.max(0, maxChoices-1));
+        options = shuffle([q, ...distractors]).map(o=>o.name);
         answers = el('div',{class:'answers', role:'group', 'aria-label':'Answer choices'});
-        options.forEach((name, i)=&gt; {
+        options.forEach((name, i)=> {
           const b = btnAnswer(name);
           b.setAttribute('data-idx', String(i+1));
           b.title = `Answer ${i+1}`;
           answers.appendChild(b);
         });
         currentAnswersEl = answers;
-        answers.addEventListener('click',(e)=&gt;{
+        answers.addEventListener('click',(e)=>{
           const btn = e.target.closest('.answer'); if(!btn || btn.disabled) return;
           const chosen = btn.getAttribute('data-name');
-          [...answers.children].forEach(b=&gt;b.disabled=true);
+          [...answers.children].forEach(b=>b.disabled=true);
           if(chosen===correct){ onCorrect(e, btn); } else { onWrong(btn, correct); }
         }, { once:true });
         view.append(answers, feedback, nextRow);
       } else {
         const box = el('div',{class:'openbox'});
-        const input = el('input',{type:'text', placeholder:'Type the sub name (e.g., &quot;club&quot;, &quot;turkey&quot;, &quot;italian&quot;)', 'aria-label':'Type your answer'});
+        const input = el('input',{type:'text', placeholder:'Type the sub name (e.g., "club", "turkey", "italian")', 'aria-label':'Type your answer'});
         const submit = el('button',{class:'btn', title:'Submit (Enter)'}, 'Submit');
         box.append(input, submit); view.append(box, feedback, nextRow); input.focus();
         function checkOpen(){
@@ -660,35 +643,35 @@
           input.disabled=true; submit.disabled=true;
         }
         submit.addEventListener('click', checkOpen);
-        input.addEventListener('keydown', e=&gt;{ if(e.key==='Enter') checkOpen(); });
+        input.addEventListener('keydown', e=>{ if(e.key==='Enter') checkOpen(); });
       }
 
       nextRow.append(leftRow, nextBtn);
 
       // 50/50 (cost + keep 1 wrong)
-      b5050.onclick=()=&gt;{
-        if(powerups.fifty&lt;=0) return warn('No 50/50 left.');
-        if(score &lt; COSTS.fifty) return warn(`Need ${COSTS.fifty} points for 50/50.`);
+      b5050.onclick=()=>{
+        if(powerups.fifty<=0) return warn('No 50/50 left.');
+        if(score < COSTS.fifty) return warn(`Need ${COSTS.fifty} points for 50/50.`);
         if(!answers) return;
         powerups.fifty--; spend(COSTS.fifty);
-        const wrong = [...answers.children].filter(b=&gt;b.getAttribute('data-name')!==correct);
-        if(wrong.length&lt;=1) return;
+        const wrong = [...answers.children].filter(b=>b.getAttribute('data-name')!==correct);
+        if(wrong.length<=1) return;
         const keepWrong = shuffle(wrong.slice())[0];
         for(const b of wrong) if(b!==keepWrong) { b.disabled=true; b.style.opacity=.55; }
         refreshHUD();
       };
       // Hint
-      bHint.onclick=()=&gt;{
-        if(powerups.hint&lt;=0) return warn('No hints left.');
-        if(score &lt; COSTS.hint) return warn(`Need ${COSTS.hint} points for a hint.`);
+      bHint.onclick=()=>{
+        if(powerups.hint<=0) return warn('No hints left.');
+        if(score < COSTS.hint) return warn(`Need ${COSTS.hint} points for a hint.`);
         powerups.hint--; spend(COSTS.hint);
         feedback.textContent = hintFor(q);
         refreshHUD();
       };
       // Skip
-      bSkip.onclick=()=&gt;{
-        if(powerups.skip&lt;=0) return warn('No skips left.');
-        if(score &lt; COSTS.skip) return warn(`Need ${COSTS.skip} points to skip.`);
+      bSkip.onclick=()=>{
+        if(powerups.skip<=0) return warn('No skips left.');
+        if(score < COSTS.skip) return warn(`Need ${COSTS.skip} points to skip.`);
         powerups.skip--; spend(COSTS.skip);
         refreshHUD(); next();
       };
@@ -710,11 +693,11 @@
         const elapsed = (Date.now()-questionStart)/1000;
         const remain = Math.max(0, timeLeft - elapsed);
         bar.style.transform = `scaleX(${remain/timeLeft})`;
-        if(remain&lt;=0){
+        if(remain<=0){
           clearTimer();
           if(player.mode==='open'){ mistakes++; feedback.textContent=`Time's up! Correct: ${correct}`; }
           else { feedback.textContent=`Time's up!`; }
-          if(answers) [...answers.children].forEach(b=&gt;b.disabled=true);
+          if(answers) [...answers.children].forEach(b=>b.disabled=true);
           if(mode==='real'){ return lose(`Time's up! Correct was: ${correct}`); }
           nextBtn.style.display='inline-block';
           if(mode==='survival'){ mistakes++; lives=0; }
@@ -724,12 +707,12 @@
       function onCorrect(evt, node){
         beep(1046); streak++; bestStreak=Math.max(bestStreak, streak);
         score += pointsEarned(); scoreEl.textContent=`Score: ${score}`; updateLiveBoard();
-        achievements.add('First Hit'); if(streak&gt;=3) achievements.add('Hot Streak'); if(streak&gt;=5) achievements.add('Blazing!');
+        achievements.add('First Hit'); if(streak>=3) achievements.add('Hot Streak'); if(streak>=5) achievements.add('Blazing!');
         triggerFlash(evt); try{ const r = node.getBoundingClientRect(); confetti.blast(r.left+r.width/2, r.top+window.scrollY); }catch{}
         if(currentAnswersEl){
-          const btn = [...currentAnswersEl.children].find(b=&gt;b.getAttribute('data-name')===correct);
+          const btn = [...currentAnswersEl.children].find(b=>b.getAttribute('data-name')===correct);
           if(btn) btn.classList.add('correct');
-          [...currentAnswersEl.children].forEach(b=&gt;b.disabled=true);
+          [...currentAnswersEl.children].forEach(b=>b.disabled=true);
         }
         nextBtn.style.display='inline-block'; clearTimer();
         setTimeout(next, 850);
@@ -739,9 +722,9 @@
         beep(220); streak=0; mistakes++;
         if(node.classList) node.classList.add('wrong');
         if(currentAnswersEl){
-          const t=[...currentAnswersEl.children].find(b=&gt;b.getAttribute('data-name')===correct);
+          const t=[...currentAnswersEl.children].find(b=>b.getAttribute('data-name')===correct);
           if(t) t.classList.add('correct');
-          [...currentAnswersEl.children].forEach(b=&gt;b.disabled=true);
+          [...currentAnswersEl.children].forEach(b=>b.disabled=true);
         }
         clearTimer();
         if(mode==='real'){ return lose(`Wrong answer. Correct was: ${correct}`); }
@@ -759,27 +742,27 @@
       }
 
       function next(){
-        if(player.mode==='survival' &amp;&amp; lives&lt;=0) return finish(false);
+        if(player.mode==='survival' && lives<=0) return finish(false);
         idx++;
-        if(player.mode==='marathon'){ if(mistakes&gt;=3) return finish(false); }
+        if(player.mode==='marathon'){ if(mistakes>=3) return finish(false); }
         renderQ();
       }
     }
 
     // keyboard shortcuts
-    window.onkeydown = (e)=&gt;{
+    window.onkeydown = (e)=>{
       const k = e.key.toLowerCase();
       if(k==='m'){ soundOn=!soundOn; LS.setSound(soundOn); return; }
       if(!currentAnswersEl) {
-        if(k==='enter' &amp;&amp; nextBtnRef &amp;&amp; nextBtnRef.style.display!=='none') nextBtnRef.click();
+        if(k==='enter' && nextBtnRef && nextBtnRef.style.display!=='none') nextBtnRef.click();
         return;
       }
       if(/\d/.test(k)){
         const n = Number(k);
-        const btn = [...currentAnswersEl.children].find(b =&gt; Number(b.getAttribute('data-idx'))===n &amp;&amp; !b.disabled);
+        const btn = [...currentAnswersEl.children].find(b => Number(b.getAttribute('data-idx'))===n && !b.disabled);
         if(btn) btn.click();
       } else if(k==='enter'){
-        if(nextBtnRef &amp;&amp; nextBtnRef.style.display!=='none') nextBtnRef.click();
+        if(nextBtnRef && nextBtnRef.style.display!=='none') nextBtnRef.click();
       } else if(k==='f'){ document.querySelector('.next-row .btn.ghost:nth-child(1)')?.click(); }
       else if(k==='h'){ document.querySelector('.next-row .btn.ghost:nth-child(2)')?.click(); }
       else if(k==='s'){ document.querySelector('.next-row .btn.ghost:nth-child(3)')?.click(); }
@@ -792,7 +775,7 @@
 
   function hintFor(q){
     const n = q.name; const words = n.split(' ');
-    return `Hint: ${words.length} word${words.length&gt;1?'s':''}, starts with &quot;${n[0]}&quot;`;
+    return `Hint: ${words.length} word${words.length>1?'s':''}, starts with "${n[0]}"`;
   }
 
   function btnAnswer(name){ const b=el('button',{class:'btn answer','data-name':name}); b.textContent=name; return b; }
@@ -812,7 +795,7 @@
     const x = ((evt.clientX ?? (r.left + r.width/2)) - r.left) + 'px';
     const y = ((evt.clientY ?? (r.top + r.height/2)) - r.top) + 'px';
     flash.style.setProperty('--x', x); flash.style.setProperty('--y', y);
-    appCard.classList.add('flash-on'); setTimeout(()=&gt;appCard.classList.remove('flash-on'), 300);
+    appCard.classList.add('flash-on'); setTimeout(()=>appCard.classList.remove('flash-on'), 300);
   }
 
   function hsKey(name){ return `jm_hs_${name||'__guest'}`; }
@@ -824,18 +807,18 @@
     const preview = { name: player.name||'Guest', avatar: player.avatar, mode:(player.mode||'—'), score, time: Date.now() };
     const temp = board.slice(0,10);
     let inserted=false; const rows=[];
-    for(let i=0;i&lt;temp.length;i++){
-      if(!inserted &amp;&amp; score &gt; temp[i].score){ rows.push(preview); inserted=true; }
+    for(let i=0;i<temp.length;i++){
+      if(!inserted && score > temp[i].score){ rows.push(preview); inserted=true; }
       rows.push(temp[i]);
     }
     if(!inserted) rows.push(preview);
 
     const table = document.createElement('table'); table.className='lb';
-    table.innerHTML = '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Mode&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;';
+    table.innerHTML = '<thead><tr><th>#</th><th>Name</th><th>Mode</th><th>Score</th></tr></thead>';
     const tb = document.createElement('tbody');
-    rows.slice(0,10).forEach((e,i)=&gt;{
+    rows.slice(0,10).forEach((e,i)=>{
       const tr = document.createElement('tr'); if(e.name===preview.name) tr.className='me';
-      tr.innerHTML = `&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${e.avatar||'🍞'} ${e.name}&lt;/td&gt;&lt;td&gt;${labelMode(e.mode)}&lt;/td&gt;&lt;td&gt;${e.score}&lt;/td&gt;`;
+      tr.innerHTML = `<td>${i+1}</td><td>${e.avatar||'🍞'} ${e.name}</td><td>${labelMode(e.mode)}</td><td>${e.score}</td>`;
       tb.appendChild(tr);
     });
     table.appendChild(tb); lbWrap.replaceChildren(table);
@@ -854,8 +837,8 @@
     const row = el('div',{class:'row'});
     const retry = el('button',{class:'btn warn'}, 'Retry');
     const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
-    retry.onclick = ()=&gt; startQuiz(player.mode, player.difficulty);
-    menu.onclick = ()=&gt; renderMenu();
+    retry.onclick = ()=> startQuiz(player.mode, player.difficulty);
+    menu.onclick = ()=> renderMenu();
     row.append(retry, menu);
     box.append(h,p,row);
     view.append(box);
@@ -863,12 +846,12 @@
 
   function finish(completedSet){
     clearTimer();
-    const perfect = (player.mode!=='marathon' &amp;&amp; player.mode!=='real' &amp;&amp; score&gt;0 &amp;&amp; mistakes===0 &amp;&amp; score&gt;=QUESTIONS.length*10);
+    const perfect = (player.mode!=='marathon' && player.mode!=='real' && score>0 && mistakes===0 && score>=QUESTIONS.length*10);
     if(player.mode==='real'){
-      if(mistakes===0 &amp;&amp; completedSet){
+      if(mistakes===0 && completedSet){
         const entry = { name: player.name||'Guest', avatar: player.avatar, mode: player.mode, score, time: Date.now(), streak: bestStreak };
         LS.pushScore(entry); renderLeaderboard(player.name);
-        const per = getHighScoreFor(player.name); if(score&gt;per) setHighScoreFor(player.name, score);
+        const per = getHighScoreFor(player.name); if(score>per) setHighScoreFor(player.name, score);
 
         view.replaceChildren();
         const box = el('div',{class:'center fade-in'});
@@ -877,8 +860,8 @@
         const row = el('div',{class:'row'});
         const again = el('button',{class:'btn'}, 'Play Again');
         const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
-        again.onclick = ()=&gt; startQuiz('real', player.difficulty);
-        menu.onclick = ()=&gt; renderMenu();
+        again.onclick = ()=> startQuiz('real', player.difficulty);
+        menu.onclick = ()=> renderMenu();
         row.append(again, menu);
         box.append(h,p,row);
         view.append(box);
@@ -891,32 +874,32 @@
 
     const entry = { name: player.name||'Guest', avatar: player.avatar, mode: player.mode, score, time: Date.now(), streak: bestStreak };
     LS.pushScore(entry); renderLeaderboard(player.name);
-    const per = getHighScoreFor(player.name); if(score&gt;per) setHighScoreFor(player.name, score);
+    const per = getHighScoreFor(player.name); if(score>per) setHighScoreFor(player.name, score);
 
     view.replaceChildren();
     const done = el('div',{class:'center fade-in'});
     const stats = el('div');
-    stats.innerHTML = `&lt;h2&gt;Finished!&lt;/h2&gt;
-      &lt;p&gt;${player.avatar||''} ${player.name||'Guest'}, Score: &lt;strong&gt;${score}&lt;/strong&gt; • Best Streak: &lt;strong&gt;${bestStreak}&lt;/strong&gt; • Mistakes: &lt;strong&gt;${mistakes}&lt;/strong&gt;&lt;/p&gt;
-      &lt;div class=&quot;badges&quot; id=&quot;badgeRow&quot;&gt;&lt;/div&gt;`;
+    stats.innerHTML = `<h2>Finished!</h2>
+      <p>${player.avatar||''} ${player.name||'Guest'}, Score: <strong>${score}</strong> • Best Streak: <strong>${bestStreak}</strong> • Mistakes: <strong>${mistakes}</strong></p>
+      <div class="badges" id="badgeRow"></div>`;
 
     const again = el('button',{class:'btn'}, 'Play Again');
     const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
     const share = el('button',{class:'btn pill'}, 'Share Score');
-    share.onclick = ()=&gt; navigator.clipboard?.writeText(`${player.name||'I'} scored ${score} on Jersey Mike's Quiz (${labelMode(player.mode)}). Can you beat it?`).then(()=&gt;alert('Copied!')).catch(()=&gt;alert('Copy failed.'));
+    share.onclick = ()=> navigator.clipboard?.writeText(`${player.name||'I'} scored ${score} on Jersey Mike's Quiz (${labelMode(player.mode)}). Can you beat it?`).then(()=>alert('Copied!')).catch(()=>alert('Copy failed.'));
     done.append(stats, el('div',{class:'row'},''), again, menu, share);
     view.append(done);
 
-    again.onclick = ()=&gt; startQuiz(player.mode, player.difficulty);
-    menu.onclick = ()=&gt; renderMenu();
+    again.onclick = ()=> startQuiz(player.mode, player.difficulty);
+    menu.onclick = ()=> renderMenu();
 
     const badgeRow = stats.querySelector('#badgeRow');
-    const list=[]; if(perfect) list.push('Perfect Menu Master'); if(bestStreak&gt;=5) list.push('Blazing Streak'); if(player.mode==='survival' &amp;&amp; mistakes===0) list.push('Untouchable');
+    const list=[]; if(perfect) list.push('Perfect Menu Master'); if(bestStreak>=5) list.push('Blazing Streak'); if(player.mode==='survival' && mistakes===0) list.push('Untouchable');
     for(const a of achievements) list.push(a);
-    list.forEach(txt=&gt; badgeRow.appendChild(el('span',{class:'badge-pill'}, txt)) );
+    list.forEach(txt=> badgeRow.appendChild(el('span',{class:'badge-pill'}, txt)) );
 
     if(perfect){
-      secretAch.replaceChildren(...list.map(t=&gt;{ const s=document.createElement('span'); s.textContent=t; return s; }));
+      secretAch.replaceChildren(...list.map(t=>{ const s=document.createElement('span'); s.textContent=t; return s; }));
       secret.classList.add('show'); confetti.blast(window.innerWidth/2, 0);
     }
   }
@@ -925,8 +908,6 @@
   renderLeaderboard();
   renderMenu();
 })();
-&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</pre>
+</script>
 </body>
 </html>
