@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 7.6.4.1 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { line-height: 115%; margin-bottom: 0.1in; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot; /&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+&lt;title&gt;Jersey Mike's Quiz — Deluxe Edition&lt;/title&gt;
+&lt;style&gt;
+  /* ========== Design Tokens ========== */
+  :root{
+    --brand:#d62828;
+    --ink:#0c2440;
+    --ink-2:#27405f;
+    --ui:#1f58c3;          /* richer */
+    --ui-2:#2a6df0;        /* hover */
+    --ok:#16a34a;
+    --bad:#ef4444;
+    --muted:#e5e7eb;
+    --muted-2:#d7dce2;
+    --bg:#f5f7fb;
+    --bg-grad: radial-gradient(1000px 800px at 20% -10%, #e8efff 0%, transparent 50%),
+               radial-gradient(900px 700px at 120% 20%, #ffe8ea 0%, transparent 55%),
+               radial-gradient(600px 400px at -10% 120%, #e9fff3 0%, transparent 50%);
+    --chip:#eef2ff;
+    --chip-ink:#1e3a8a;
+    --ring:#7aa3ff;
+    --glass: rgba(255,255,255,.6);
+    --border: rgba(15,23,42,.08);
+    --shadow: 0 10px 30px rgba(25,35,60,.12);
+    --shadow-lg: 0 20px 60px rgba(25,35,60,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ink:#e6edf6; --ink-2:#b9c9df;
+      --ui:#4c7dff; --ui-2:#79a1ff;
+      --ok:#22c55e; --bad:#f87171;
+      --muted:#334155; --muted-2:#3b4a61;
+      --bg:#0b1220;
+      --bg-grad: radial-gradient(900px 700px at 15% -10%, rgba(76,125,255,.15), transparent 55%),
+                 radial-gradient(900px 700px at 120% 10%, rgba(244,114,182,.12), transparent 55%),
+                 radial-gradient(600px 400px at -10% 120%, rgba(34,197,94,.12), transparent 55%);
+      --chip:#172554; --chip-ink:#a5b4fc;
+      --glass: rgba(17,23,41,.6);
+      --border: rgba(148,163,184,.12);
+      --ring:#9ab6ff;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,.5);
+    }
+  }
+
+  /* ========== Base ========== */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Noto Color Emoji;
+    color:var(--ink);
+    background:
+      linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%),
+      var(--bg-grad);
+    background-attachment: fixed;
+    min-height:100svh;
+  }
+  .wrap{ max-width:1240px; margin:0 auto; padding:20px; }
+
+  /* ========== App/Card ========== */
+  .app{
+    display:grid; grid-template-columns:1fr 360px; gap:20px; align-items:start;
+  }
+  @media (max-width: 900px){ .app{ grid-template-columns:1fr; } }
+
+  .card{
+    background:linear-gradient(180deg, var(--glass) 0%, rgba(255,255,255,.35) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius:18px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    padding:18px;
+    position:relative;
+    transition: box-shadow .2s ease, transform .12s ease, border-color .2s ease;
+  }
+  .card:hover{ box-shadow:var(--shadow-lg); }
+  h1{
+    margin:0 0 8px;
+    color:var(--brand);
+    letter-spacing:.2px;
+    font-weight:800;
+    font-size:clamp(22px,3.4vw,36px);
+    text-shadow: 0 1px 0 rgba(0,0,0,.03);
+  }
+  .subhead{ margin:0 0 14px; opacity:.85; color:var(--ink-2); }
+  .score{ font-weight:800; color:var(--ink); }
+
+  /* ========== Buttons/Inputs ========== */
+  .btn{
+    border:none; border-radius:12px; padding:12px 14px; font-size:16px; cursor:pointer;
+    background:linear-gradient(180deg,var(--ui),var(--ui-2));
+    color:#fff; box-shadow:0 6px 14px rgba(42,109,240,.22);
+    transition: transform .06s ease, filter .2s ease, box-shadow .2s ease, background .2s ease;
+    user-select:none;
+  }
+  .btn:hover{ transform:translateY(-1px); filter:saturate(1.05); box-shadow:0 10px 20px rgba(42,109,240,.28); }
+  .btn:active{ transform:translateY(0); }
+  .btn.ghost{
+    background:transparent; color:var(--ui);
+    border:2px solid color-mix(in oklab, var(--ui) 60%, white 40%);
+    box-shadow:none;
+  }
+  .btn.warn{
+    background:linear-gradient(180deg, #f87171, #ef4444);
+    box-shadow:0 6px 14px rgba(239,68,68,.22);
+  }
+  .btn.pill{
+    background:linear-gradient(180deg, #14b8a6, #0ea5e9);
+    box-shadow:0 6px 14px rgba(14,165,233,.22);
+  }
+  :focus-visible{ outline:3px solid var(--ring); outline-offset:2px; border-radius:12px; }
+
+  input[type=&quot;text&quot;], select{
+    flex:1; padding:12px 12px; font-size:16px; color:var(--ink);
+    background:rgba(255,255,255,.7);
+    border:1.5px solid var(--muted);
+    border-radius:12px;
+    transition:border-color .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  input[type=&quot;text&quot;]:focus, select:focus{
+    border-color: color-mix(in oklab, var(--ui) 60%, white 40%);
+    box-shadow: 0 0 0 5px color-mix(in oklab, var(--ui) 20%, transparent 80%);
+    background:rgba(255,255,255,.9);
+  }
+  select{ max-width:260px; }
+
+  .row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .center{ display:grid; place-items:center; text-align:center; gap:14px; min-height:320px; }
+  .field{ display:flex; gap:8px; width:100%; }
+
+  /* ========== Q &amp; Answers ========== */
+  .question{
+    font-weight:800;
+    letter-spacing:.2px;
+    font-size:clamp(18px,3vw,26px);
+    margin:6px 0 10px;
+  }
+  .answers{
+    display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-top:8px;
+  }
+  .btn.answer{
+    /* overwrite default .btn look for answer buttons */
+    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.7));
+    color:var(--ink);
+    box-shadow: 0 4px 12px rgba(15,23,42,.06);
+    border:1px solid var(--border);
+  }
+  .answer{
+    display:flex; justify-content:space-between; align-items:center; gap:12px; text-align:left;
+    border-radius:14px;
+    transition: transform .05s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease, opacity .2s ease;
+  }
+  .answer:hover{ transform: translateY(-1px); box-shadow: 0 10px 18px rgba(15,23,42,.10); border-color: color-mix(in oklab, var(--ui) 35%, white 65%);}
+  .answer:disabled{ opacity:.55; cursor:not-allowed; }
+  .answer.correct{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--ok) 20%, white 80%), color-mix(in oklab, var(--ok) 30%, white 70%)) !important;
+    border-color: color-mix(in oklab, var(--ok) 50%, white 50%) !important;
+    color:#0a3318;
+  }
+  .answer.wrong{
+    background:linear-gradient(180deg, color-mix(in oklab, var(--bad) 18%, white 82%), color-mix(in oklab, var(--bad) 28%, white 72%)) !important;
+    border-color: color-mix(in oklab, var(--bad) 45%, white 55%) !important;
+    color:#3a0b0b;
+  }
+
+  .feedback{
+    min-height:28px; margin-top:10px; font-weight:800;
+    color: var(--ink);
+    text-shadow: 0 1px 0 rgba(0,0,0,.03);
+  }
+  .next-row{ display:flex; gap:10px; justify-content:space-between; margin-top:12px; align-items:center; flex-wrap:wrap; }
+
+  /* Micro-anim/fade */
+  .fade-in{ animation:fade-in .25s ease both; }
+  @keyframes fade-in{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
+  @media (prefers-reduced-motion: reduce){ .fade-in{ animation:none } .btn{ transition:none } }
+
+  /* Click flash */
+  .flash{
+    position:absolute; inset:-2px; border-radius:22px; pointer-events:none;
+    background:radial-gradient(1200px 1200px at var(--x) var(--y), rgba(22,163,74,.18), transparent 55%);
+    opacity:0; transition:opacity .35s ease;
+  }
+  .card.flash-on .flash{ opacity:1; }
+
+  canvas#confetti{ position:fixed; inset:0; width:100vw; height:100vh; pointer-events:none; z-index:10; }
+
+  /* Sidebar / Leaderboard */
+  .sidebar h2{
+    margin:0 0 8px; font-size:20px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+    font-weight:800; letter-spacing:.2px;
+  }
+  .lb{ width:100%; border-collapse:collapse; overflow:hidden; border-radius:12px; }
+  .lb thead th{
+    font-size:12px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-2);
+    border-bottom:1px solid var(--border); padding:10px 8px; background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,.4));
+  }
+  .lb td{
+    padding:10px 8px; border-bottom:1px solid var(--border); text-align:left; font-size:14px;
+  }
+  .lb tr.me{ background:rgba(14,165,233,.10); }
+  .tiny{ font-size:12px; opacity:.78 }
+
+  .filters{ display:flex; gap:8px; }
+  .filters select{
+    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.7));
+    border:1px solid var(--border);
+  }
+
+  /* Secret overlay */
+  .secret{ position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.5); z-index:20; }
+  .secret.show{ display:grid; }
+  .badge{
+    background:linear-gradient(135deg, color-mix(in oklab, var(--ok) 55%, #fff 45%), color-mix(in oklab, #0ea5e9 55%, #fff 45%));
+    color:#fff; padding:28px 30px; border-radius:18px; text-align:center; box-shadow:var(--shadow-lg);
+    border:1px solid rgba(255,255,255,.25);
+  }
+  .badge h3{ margin:0 0 6px; font-size:28px; text-shadow:0 1px 10px rgba(0,0,0,.2)}
+  .badge p{ margin:6px 0 12px; }
+  .badge .ach{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .ach span{ background:rgba(255,255,255,.15); padding:6px 10px; border-radius:999px; backdrop-filter: blur(2px); }
+
+  /* HUD */
+  .hud{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:14px; }
+  .chip{
+    background:linear-gradient(180deg, var(--chip), color-mix(in oklab, var(--chip) 85%, #fff 15%));
+    color:var(--chip-ink); padding:6px 12px; border-radius:999px; font-weight:700;
+    border:1px solid var(--border);
+  }
+  .meter{ height:10px; background:rgba(148,163,184,.2); border-radius:999px; overflow:hidden; flex:1; min-width:180px; border:1px solid var(--border); }
+  .meter &gt; b{ display:block; height:100%;
+    background:linear-gradient(90deg, var(--ok), #eab308, var(--bad));
+    width:100%; transform-origin:left center;
+  }
+
+  /* Badges row on finish */
+  .badges{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .badge-pill{
+    background:linear-gradient(180deg, #f8fafc, #eef2f7);
+    padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid var(--border);
+  }
+
+  /* Open-ended input row */
+  .openbox{ display:flex; gap:8px; margin-top:6px; width:100%; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;canvas id=&quot;confetti&quot; aria-hidden=&quot;true&quot;&gt;&lt;/canvas&gt;
+
+  &lt;div class=&quot;secret&quot; id=&quot;secret&quot; role=&quot;dialog&quot; aria-modal=&quot;true&quot; aria-labelledby=&quot;secretTitle&quot;&gt;
+    &lt;div class=&quot;badge&quot;&gt;
+      &lt;h3 id=&quot;secretTitle&quot;&gt;🥇 Perfect Menu Master!&lt;/h3&gt;
+      &lt;p&gt;You got every sub right in one try. Legendary run!&lt;/p&gt;
+      &lt;div class=&quot;ach&quot; id=&quot;secretAch&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;secretClose&quot;&gt;Claim Bragging Rights&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;main class=&quot;app&quot; aria-labelledby=&quot;pageTitle&quot;&gt;
+      &lt;section class=&quot;card&quot; id=&quot;main&quot;&gt;
+        &lt;div class=&quot;flash&quot; aria-hidden=&quot;true&quot;&gt;&lt;/div&gt;
+        &lt;h1 id=&quot;pageTitle&quot;&gt;Jersey Mike's Quiz&lt;/h1&gt;
+        &lt;p class=&quot;subhead&quot;&gt;
+          Pick a mode, enter your name, choose difficulty, and climb the leaderboard.
+          &lt;span class=&quot;score&quot; id=&quot;score&quot; aria-live=&quot;polite&quot;&gt;Score: 0&lt;/span&gt; •
+          &lt;span class=&quot;score&quot; id=&quot;high&quot; aria-live=&quot;polite&quot;&gt;High Score: 0&lt;/span&gt;
+        &lt;/p&gt;
+        &lt;div id=&quot;view&quot; class=&quot;fade-in&quot;&gt;&lt;/div&gt;
+        &lt;p class=&quot;tiny&quot; style=&quot;margin-top:8px;opacity:.8&quot;&gt;
+          Shortcuts: 1-9 answer • Enter submit/next • F 50/50 • H Hint • S Skip • M Sound
+        &lt;/p&gt;
+      &lt;/section&gt;
+
+      &lt;aside class=&quot;card sidebar&quot; id=&quot;side&quot; aria-labelledby=&quot;lbTitle&quot;&gt;
+        &lt;h2 id=&quot;lbTitle&quot;&gt;
+          Leaderboard
+          &lt;span class=&quot;filters&quot;&gt;
+            &lt;select id=&quot;fMode&quot; aria-label=&quot;Filter by mode&quot;&gt;
+              &lt;option value=&quot;all&quot;&gt;All&lt;/option&gt;
+              &lt;option value=&quot;mc&quot;&gt;MC&lt;/option&gt;
+              &lt;option value=&quot;open&quot;&gt;Open&lt;/option&gt;
+              &lt;option value=&quot;survival&quot;&gt;Survival&lt;/option&gt;
+              &lt;option value=&quot;marathon&quot;&gt;Marathon&lt;/option&gt;
+              &lt;option value=&quot;real&quot;&gt;REAL QUIZ&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;select id=&quot;fWhen&quot; aria-label=&quot;Filter by time&quot;&gt;
+              &lt;option value=&quot;all&quot;&gt;All-time&lt;/option&gt;
+              &lt;option value=&quot;today&quot;&gt;Today&lt;/option&gt;
+              &lt;option value=&quot;week&quot;&gt;This week&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/span&gt;
+        &lt;/h2&gt;
+        &lt;div id=&quot;lbWrap&quot; role=&quot;region&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;tiny&quot; id=&quot;hs&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+      &lt;/aside&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+
+&lt;script&gt;
+(()=&gt; {
+  // ===== DATA ===========================================================
+  const QUESTIONS = [
+    { number: 1,  name: &quot;BLT&quot; },
+    { number: 2,  name: &quot;Jersey Shore's Favorite&quot; },
+    { number: 3,  name: &quot;Ham &amp; Provolone&quot; },
+    { number: 4,  name: &quot;The Number Four&quot; },
+    { number: 5,  name: &quot;The Super Sub&quot; },
+    { number: 6,  name: &quot;Roast Beef &amp; Provolone&quot; },
+    { number: 7,  name: &quot;Turkey Breast &amp; Provolone&quot; },
+    { number: 8,  name: &quot;Club Sub&quot; },
+    { number: 9,  name: &quot;Club Supreme&quot; },
+    { number: 10, name: &quot;Tuna Fish&quot; },
+    { number: 11, name: &quot;Stickball Special&quot; },
+    { number: 12, name: &quot;Cancun Chicken&quot; },
+    { number: 13, name: &quot;The Original Italian&quot; },
+    { number: 14, name: &quot;The Veggie&quot; },
+    { number: 17, name: &quot;Mike's Famous Philly&quot; },
+    { number: 26, name: &quot;Bacon Ranch Chicken Cheese Steak&quot; },
+    { number: 42, name: &quot;Chipotle Chicken Cheese Steak&quot; },
+    { number: 43, name: &quot;Chipotle Cheese Steak&quot; }
+  ];
+
+  // Costs to use power-ups (points/score)
+  const COSTS = { fifty: 30, hint: 15, skip: 40 };
+
+  // ===== UTIL ===========================================================
+  const rnd = n =&gt; Math.floor(Math.random()*n);
+  const shuffle = arr =&gt; { for(let i=arr.length-1;i&gt;0;i--){ const j=rnd(i+1); [arr[i],arr[j]]=[arr[j],arr[i]] } return arr; };
+  const pickK = (arr,k) =&gt; shuffle(arr.slice()).slice(0,k);
+  const el = (tag, attrs={}, text) =&gt; { const n=document.createElement(tag); for(const k in attrs){ n.setAttribute(k, attrs[k]); } if(text!=null) n.textContent=text; return n; };
+  const now = ()=&gt; new Date();
+  const startOfDay = d=&gt; new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const startOfWeek = d=&gt;{ const dd=new Date(d); const day=(dd.getDay()+6)%7; dd.setDate(dd.getDate()-day); dd.setHours(0,0,0,0); return dd.getTime(); };
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ===== RELAXED KEYWORDS ==============================================
+  const KEYWORDS = new Map(QUESTIONS.map(q=&gt;[q.number, buildKeywords(q.name)]));
+  function buildKeywords(name){
+    const base = norm(name);
+    const words = new Set(base.split(' '));
+    const keys = new Set([base]);
+    if(base.includes('club')) keys.add('club');
+    if(base.includes('turkey')){ keys.add('turkey'); keys.add('turkey provolone'); keys.add('turkey sub'); }
+    if(base.includes('ham')) keys.add('ham');
+    if(base.includes('roast beef')) keys.add('roast beef');
+    if(base.includes('italian')) keys.add('italian');
+    if(base.includes('veggie')) keys.add('veggie');
+    if(base.includes('tuna')) keys.add('tuna');
+    if(base.includes('philly')) keys.add('philly');
+    if(base.includes('chipotle') &amp;&amp; base.includes('chicken')){ keys.add('chipotle chicken'); keys.add('chipotle chicken cheese steak'); }
+    if(base.includes('chipotle') &amp;&amp; !base.includes('chicken')){ keys.add('chipotle'); keys.add('chipotle cheese steak'); }
+    if(base.includes('bacon') &amp;&amp; base.includes('ranch')) keys.add('bacon ranch');
+    if(base.includes('blt')) keys.add('blt');
+    if(base.includes('stickball')) keys.add('stickball');
+    if(base.includes('super sub')) keys.add('super sub');
+    const arr=[...words];
+    for(let i=0;i&lt;arr.length;i++) for(let j=i+1;j&lt;arr.length;j++) keys.add(arr[i]+' '+arr[j]);
+    return keys;
+  }
+  function norm(s){ return (s||'').toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim(); }
+
+  // ===== STORAGE ========================================================
+  const LS = {
+    namesKey:'jm_names',
+    boardKey:'jm_leaderboard',
+    soundKey:'jm_sound',
+    getNames(){ try{ return JSON.parse(localStorage.getItem(this.namesKey)||'[]'); }catch{return []} },
+    pushName(name){
+      const list = this.getNames();
+      const clean = name.trim(); if(!clean) return list;
+      const filtered = [clean, ...list.filter(n=&gt;n!==clean)].slice(0,50);
+      localStorage.setItem(this.namesKey, JSON.stringify(filtered));
+      return filtered;
+    },
+    getBoard(){ try{ return JSON.parse(localStorage.getItem(this.boardKey)||'[]'); }catch{return []} },
+    pushScore(entry){
+      const board = this.getBoard();
+      board.push(entry);
+      board.sort((a,b)=&gt; b.score - a.score || a.time - b.time);
+      localStorage.setItem(this.boardKey, JSON.stringify(board.slice(0,200)));
+      return board.slice(0,200);
+    },
+    getSound(){ try{ return JSON.parse(localStorage.getItem(this.soundKey) || 'true'); }catch{return true} },
+    setSound(v){ try{ localStorage.setItem(this.soundKey, JSON.stringify(!!v)); }catch{} }
+  };
+
+  let player = { name:null, mode:null, difficulty:'normal', avatar:null };
+  let score = 0, mistakes = 0, highScore = 0, streak = 0, bestStreak = 0;
+  let timeLeft = 0, timerId = null, questionStart = 0;
+  let powerups = { fifty:0, hint:0, skip:0 };
+  let achievements = new Set();
+
+  // DOM
+  const appCard = document.getElementById('main');
+  const flash = appCard.querySelector('.flash');
+  const view = document.getElementById('view');
+  const scoreEl = document.getElementById('score');
+  const highEl = document.getElementById('high');
+  const lbWrap = document.getElementById('lbWrap');
+  const hs = document.getElementById('hs');
+  const fMode = document.getElementById('fMode');
+  const fWhen = document.getElementById('fWhen');
+  const secret = document.getElementById('secret');
+  const secretAch = document.getElementById('secretAch');
+  document.getElementById('secretClose').addEventListener('click', ()=&gt; secret.classList.remove('show'));
+
+  // Sounds
+  let soundOn = LS.getSound(); let audioCtx = null;
+  function beep(freq=880, dur=120){
+    if(!soundOn) return;
+    try{
+      audioCtx = audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+      const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value=freq; o.connect(g); g.connect(audioCtx.destination);
+      g.gain.value=.06; o.start(); setTimeout(()=&gt;o.stop(), dur);
+    }catch{}
+  }
+
+  // Confetti
+  const confetti = (()=&gt; {
+    const cvs = document.getElementById('confetti');
+    const ctx = cvs.getContext('2d');
+    let W = cvs.width = window.innerWidth; let H = cvs.height = window.innerHeight;
+    let rafId=null;
+    function onResize(){ W=cvs.width=innerWidth; H=cvs.height=innerHeight; }
+    window.addEventListener('resize', onResize, {passive:true});
+    function blast(x,y){
+      if(prefersReduced) return;
+      const N = 140; const parts = [];
+      for(let i=0;i&lt;N;i++){
+        const ang = Math.random()*Math.PI*2;
+        parts.push({ x, y, vx: Math.cos(ang)*(2+Math.random()*5), vy: Math.sin(ang)*(2+Math.random()*5), g: 0.08+Math.random()*0.08, life: 60+Math.random()*40, rot: Math.random()*Math.PI, vr: (Math.random()-.5)*0.3, w: 4+Math.random()*3, h: 6+Math.random()*4, a: 1 });
+      }
+      cancelAnimationFrame(rafId);
+      (function tick(){
+        ctx.clearRect(0,0,W,H);
+        let alive=false;
+        for(const p of parts){
+          p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--; p.a=Math.max(0,p.life/100);
+          if(p.life&gt;0) alive=true;
+          ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.globalAlpha=p.a; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+        }
+        if(alive) rafId=requestAnimationFrame(tick);
+      })();
+    }
+    return { blast };
+  })();
+
+  // ===== Leaderboard ====================================================
+  function renderLeaderboard(highlightName){
+    const board = LS.getBoard();
+    const mode = fMode.value; const when = fWhen.value; const nowTime = now();
+    const startCut = when==='today' ? startOfDay(nowTime) : when==='week' ? startOfWeek(nowTime) : 0;
+    const filtered = board.filter(e=&gt; (mode==='all' || e.mode===mode) &amp;&amp; (startCut===0 || e.time&gt;=startCut));
+    if(!filtered.length){ lbWrap.innerHTML = '&lt;p class=&quot;tiny&quot;&gt;No scores yet. Be the first!&lt;/p&gt;'; hs.textContent=''; return; }
+    const table = document.createElement('table'); table.className='lb';
+    table.innerHTML = '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Mode&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;';
+    const tb = document.createElement('tbody');
+    filtered.slice(0,10).forEach((e,i)=&gt;{
+      const tr = document.createElement('tr'); if(highlightName &amp;&amp; e.name===highlightName) tr.className='me';
+      tr.innerHTML = `&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${e.avatar||'🍞'} ${e.name}&lt;/td&gt;&lt;td&gt;${labelMode(e.mode)}&lt;/td&gt;&lt;td&gt;${e.score}&lt;/td&gt;`; tb.appendChild(tr);
+    });
+    table.appendChild(tb); lbWrap.replaceChildren(table);
+    const top = filtered[0]; hs.textContent = `Best: ${top.name} — ${top.score} (${labelMode(top.mode)})`;
+  }
+  fMode.addEventListener('change', ()=&gt;renderLeaderboard());
+  fWhen.addEventListener('change', ()=&gt;renderLeaderboard());
+
+  // ===== Menu ===========================================================
+  function renderMenu(){
+    clearTimer();
+    score=0; mistakes=0; streak=0; bestStreak=0; achievements.clear();
+    scoreEl.textContent='Score: 0';
+    view.replaceChildren();
+
+    const box = el('div', {class:'center fade-in', role:'region', 'aria-label':'Start menu'});
+    const title = el('div'); title.innerHTML='&lt;h2&gt;Who\'s playing?&lt;/h2&gt;';
+
+    const lastNames = LS.getNames().slice(0,10);
+    const opts = el('div',{class:'row', style:'width:100%; justify-content:center'});
+    const existingBtn = el('button',{class:'btn','aria-controls':'existingPane','aria-expanded':'false'}, 'Use Existing Name');
+    const newBtn = el('button',{class:'btn ghost','aria-controls':'newPane','aria-expanded':'false'}, 'New Name');
+
+    const existingPane = el('div',{id:'existingPane',style:'width:100%; display:none; gap:8px'});
+    const nameSelect = el('select',{'aria-label':'Recent names'});
+    nameSelect.appendChild(el('option',{value:''}, '-- Select from last 10 --'));
+    lastNames.forEach(n=&gt; nameSelect.appendChild(el('option',{value:n}, n)) );
+    const chooseBtn = el('button',{class:'btn'}, 'Choose');
+    existingPane.append(nameSelect, chooseBtn);
+
+    const newPane = el('div',{id:'newPane',style:'width:100%; display:none'});
+    const nameFieldWrap = el('div',{class:'field'});
+    const nameField = el('input',{type:'text', placeholder:'Enter your name', 'aria-label':'Your name'});
+    const saveNameBtn = el('button',{class:'btn'}, 'Save Name');
+    nameFieldWrap.append(nameField, saveNameBtn);
+    newPane.appendChild(nameFieldWrap);
+
+    const modePane = el('div',{style:'width:100%; display:none; margin-top:10px'});
+    const mtitle = el('div'); mtitle.innerHTML='&lt;h3&gt;Choose a Mode&lt;/h3&gt;';
+    const mc = el('button',{class:'btn'}, '▶ Multiple Choice');
+    const oe = el('button',{class:'btn ghost'}, '⌨️ Open-Ended');
+    const sur = el('button',{class:'btn ghost'}, '❤️ Survival');
+    const mar = el('button',{class:'btn ghost'}, '∞ Marathon');
+    const real = el('button',{class:'btn warn'}, '💀 REAL QUIZ');
+
+    const dSelWrap = el('div',{class:'row', style:'margin-top:8px; align-items:center'});
+    const dLab = el('div',{},'Difficulty:');
+    const dSel = el('select', {'aria-label':'Difficulty'});
+    dSel.innerHTML = '&lt;option value=&quot;easy&quot;&gt;Easy&lt;/option&gt;&lt;option value=&quot;normal&quot; selected&gt;Normal&lt;/option&gt;&lt;option value=&quot;hard&quot;&gt;Hard&lt;/option&gt;';
+    const soundToggle = el('button',{class:'btn ghost'}, `Sound: ${soundOn? 'On':'Off'}`);
+    dSelWrap.append(dLab,dSel,soundToggle);
+
+    const lbPreviewTitle = el('div'); lbPreviewTitle.innerHTML = '&lt;p class=&quot;tiny&quot; style=&quot;margin-top:10px&quot;&gt;Live leaderboard preview&lt;/p&gt;';
+    const lbPreview = el('div'); lbPreview.id='lbPreview';
+    modePane.append(mtitle, el('div',{class:'row'}, ''), mc, oe, sur, mar, real, dSelWrap, lbPreviewTitle, lbPreview);
+
+    const share = el('button',{class:'btn pill', style:'margin-top:10px'}, 'Share Best Score');
+
+    opts.append(existingBtn, newBtn);
+    box.append(title, opts, existingPane, newPane, modePane, share);
+    view.append(box);
+
+    renderLeaderboard();
+    lbPreview.replaceChildren(lbWrap.firstChild?.cloneNode(true) || el('div',{},''));
+
+    existingBtn.onclick = ()=&gt;{ existingPane.style.display='grid'; existingBtn.setAttribute('aria-expanded','true'); newPane.style.display='none'; newBtn.setAttribute('aria-expanded','false'); };
+    newBtn.onclick = ()=&gt;{ newPane.style.display='block'; newBtn.setAttribute('aria-expanded','true'); existingPane.style.display='none'; existingBtn.setAttribute('aria-expanded','false'); nameField.focus(); };
+
+    chooseBtn.onclick = ()=&gt;{ const val = nameSelect.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
+    saveNameBtn.onclick = ()=&gt;{ const val = nameField.value.trim(); if(!val) return; setPlayer(val); modePane.style.display='block'; };
+
+    soundToggle.onclick = ()=&gt;{ soundOn=!soundOn; LS.setSound(soundOn); soundToggle.textContent = `Sound: ${soundOn? 'On':'Off'}`; };
+
+    mc.onclick = ()=&gt; startQuiz('mc', dSel.value);
+    oe.onclick = ()=&gt; startQuiz('open', dSel.value);
+    sur.onclick = ()=&gt; startQuiz('survival', dSel.value);
+    mar.onclick = ()=&gt; startQuiz('marathon', dSel.value);
+    real.onclick = ()=&gt; startQuiz('real', dSel.value);
+
+    share.addEventListener('click', ()=&gt;{
+      const best = getHighScoreFor(player.name);
+      navigator.clipboard?.writeText(`${player.name||'I'} scored ${best} on Jersey Mike's Quiz!`).then(()=&gt;alert('Copied to clipboard!')).catch(()=&gt;alert('Copy failed.'));
+    });
+  }
+
+  function setPlayer(name){ player.name = name; player.avatar = pickAvatar(name); LS.pushName(name); highEl.textContent = `High Score: ${getHighScoreFor(name)}`; }
+  function pickAvatar(name){ const list=['🥪','🍞','🥖','🍅','🧀','🥓','🥬','🫑','🧅','🍗']; return list[Math.abs(hash(name))%list.length]; }
+  function hash(s){ let h=0; for(let i=0;i&lt;s.length;i++){ h=((h&lt;&lt;5)-h)+s.charCodeAt(i); h|=0; } return h; }
+
+  // ===== QUIZ ===========================================================
+  let currentAnswersEl = null;
+  let nextBtnRef = null;
+  function startQuiz(mode, difficulty){
+    player.mode = mode; player.difficulty = difficulty; score=0; mistakes=0; streak=0; bestStreak=0; achievements.clear();
+    scoreEl.textContent='Score: 0'; highScore = getHighScoreFor(player.name); highEl.textContent = `High Score: ${highScore}`;
+
+    // power-ups by difficulty (counts). REAL QUIZ disables all.
+    powerups = mode==='real' ? { fifty:0, hint:0, skip:0 } :
+      difficulty==='easy' ? { fifty:2, hint:3, skip:2 } :
+      difficulty==='hard' ? { fifty:0, hint:1, skip:0 } :
+      { fifty:1, hint:2, skip:1 };
+
+    const order = shuffle(QUESTIONS.slice()); let idx = 0; let lives = mode==='survival' ? 1 : 9999;
+
+    function renderQ(){
+      if(mode==='marathon' &amp;&amp; mistakes&gt;=3) return finish(true);
+      if(idx&gt;=order.length){
+        if(mode==='marathon'){ idx=0; shuffle(order); }
+        else return finish(true); // completed set
+      }
+      const q = order[idx];
+      view.replaceChildren();
+
+      // HUD
+      const hud = el('div',{class:'hud'});
+      const streakEl = el('span',{class:'chip', id:'streak'}, `Streak: ${streak}`);
+      const coinsEl = el('span',{class:'chip'}, `Points: ${score}`);
+      const pu = el('span',{class:'chip'}, mode==='real' ? 'Power-ups: disabled' :
+        `50/50: ${powerups.fifty} (${COSTS.fifty}) • Hint: ${powerups.hint} (${COSTS.hint}) • Skip: ${powerups.skip} (${COSTS.skip})`);
+      const timer = el('div',{class:'meter'}); const bar = el('b'); timer.appendChild(bar);
+      const soundBtn = el('button',{class:'btn ghost', title:'Toggle sound (M)'}, soundOn?'🔊':'🔈');
+      const menuBtn = el('button',{class:'btn ghost'}, 'Menu'); // persistent return to menu
+      soundBtn.onclick=()=&gt;{ soundOn=!soundOn; LS.setSound(soundOn); soundBtn.textContent=soundOn?'🔊':'🔈'; };
+      menuBtn.onclick=()=&gt;{ clearTimer(); renderMenu(); };
+      hud.append(streakEl, coinsEl, pu, timer, soundBtn, menuBtn);
+      view.appendChild(hud);
+
+      const qEl = el('div',{class:'question fade-in'}, `What is sub #${q.number}?`);
+      view.appendChild(qEl);
+
+      const feedback = el('div',{class:'feedback', id:'feedback', 'aria-live':'polite'});
+      const nextRow = el('div',{class:'next-row'});
+      const leftRow = el('div',{class:'row'});
+      const nextBtn = el('button',{class:'btn pill'}, 'Next'); nextBtn.style.display='none'; nextBtn.addEventListener('click', next);
+      nextBtnRef = nextBtn;
+
+      // power-up buttons
+      const b5050 = el('button',{class:'btn ghost', title:`50/50 (-${COSTS.fifty} pts)`}, '50/50');
+      const bHint  = el('button',{class:'btn ghost', title:`Hint (-${COSTS.hint} pts)`}, 'Hint');
+      const bSkip  = el('button',{class:'btn ghost', title:`Skip (-${COSTS.skip} pts)`}, 'Skip');
+
+      if(mode!=='real'){ leftRow.append(b5050,bHint,bSkip); } // disabled entirely in REAL QUIZ
+
+      let answers, options=[]; const correct = q.name;
+      currentAnswersEl = null;
+
+      if(mode==='mc' || mode==='survival' || mode==='marathon' || mode==='real'){
+        const maxChoices = difficulty==='easy' ? 5 : difficulty==='hard' ? 3 : 4;
+        const others = QUESTIONS.filter(x=&gt;x!==q); const distractors = pickK(others, Math.max(0, maxChoices-1));
+        options = shuffle([q, ...distractors]).map(o=&gt;o.name);
+        answers = el('div',{class:'answers', role:'group', 'aria-label':'Answer choices'});
+        options.forEach((name, i)=&gt; {
+          const b = btnAnswer(name);
+          b.setAttribute('data-idx', String(i+1));
+          b.title = `Answer ${i+1}`;
+          answers.appendChild(b);
+        });
+        currentAnswersEl = answers;
+        answers.addEventListener('click',(e)=&gt;{
+          const btn = e.target.closest('.answer'); if(!btn || btn.disabled) return;
+          const chosen = btn.getAttribute('data-name');
+          [...answers.children].forEach(b=&gt;b.disabled=true);
+          if(chosen===correct){ onCorrect(e, btn); } else { onWrong(btn, correct); }
+        }, { once:true });
+        view.append(answers, feedback, nextRow);
+      } else {
+        const box = el('div',{class:'openbox'});
+        const input = el('input',{type:'text', placeholder:'Type the sub name (e.g., &quot;club&quot;, &quot;turkey&quot;, &quot;italian&quot;)', 'aria-label':'Type your answer'});
+        const submit = el('button',{class:'btn', title:'Submit (Enter)'}, 'Submit');
+        box.append(input, submit); view.append(box, feedback, nextRow); input.focus();
+        function checkOpen(){
+          if(nextBtn.style.display!=='none') return;
+          const ok=isOpenEndedCorrect(norm(input.value), q);
+          if(ok){ onCorrect({clientX:window.innerWidth/2, clientY:0}, input); }
+          else { onWrong(input, correct); }
+          input.disabled=true; submit.disabled=true;
+        }
+        submit.addEventListener('click', checkOpen);
+        input.addEventListener('keydown', e=&gt;{ if(e.key==='Enter') checkOpen(); });
+      }
+
+      nextRow.append(leftRow, nextBtn);
+
+      // 50/50 (cost + keep 1 wrong)
+      b5050.onclick=()=&gt;{
+        if(powerups.fifty&lt;=0) return warn('No 50/50 left.');
+        if(score &lt; COSTS.fifty) return warn(`Need ${COSTS.fifty} points for 50/50.`);
+        if(!answers) return;
+        powerups.fifty--; spend(COSTS.fifty);
+        const wrong = [...answers.children].filter(b=&gt;b.getAttribute('data-name')!==correct);
+        if(wrong.length&lt;=1) return;
+        const keepWrong = shuffle(wrong.slice())[0];
+        for(const b of wrong) if(b!==keepWrong) { b.disabled=true; b.style.opacity=.55; }
+        refreshHUD();
+      };
+      // Hint
+      bHint.onclick=()=&gt;{
+        if(powerups.hint&lt;=0) return warn('No hints left.');
+        if(score &lt; COSTS.hint) return warn(`Need ${COSTS.hint} points for a hint.`);
+        powerups.hint--; spend(COSTS.hint);
+        feedback.textContent = hintFor(q);
+        refreshHUD();
+      };
+      // Skip
+      bSkip.onclick=()=&gt;{
+        if(powerups.skip&lt;=0) return warn('No skips left.');
+        if(score &lt; COSTS.skip) return warn(`Need ${COSTS.skip} points to skip.`);
+        powerups.skip--; spend(COSTS.skip);
+        refreshHUD(); next();
+      };
+
+      function warn(msg){ feedback.textContent = msg; beep(300,120); }
+      function spend(n){ score = Math.max(0, score - n); scoreEl.textContent=`Score: ${score}`; }
+
+      function refreshHUD(){
+        coinsEl.textContent = `Points: ${score}`;
+        if(mode!=='real'){
+          pu.textContent = `50/50: ${powerups.fifty} (${COSTS.fifty}) • Hint: ${powerups.hint} (${COSTS.hint}) • Skip: ${powerups.skip} (${COSTS.skip})`;
+        } else { pu.textContent = 'Power-ups: disabled'; }
+      }
+
+      // Timer
+      timeLeft = difficulty==='easy' ? 18 : difficulty==='hard' ? 8 : 12; questionStart = Date.now();
+      tick(); timerId = setInterval(tick, 100);
+      function tick(){
+        const elapsed = (Date.now()-questionStart)/1000;
+        const remain = Math.max(0, timeLeft - elapsed);
+        bar.style.transform = `scaleX(${remain/timeLeft})`;
+        if(remain&lt;=0){
+          clearTimer();
+          if(player.mode==='open'){ mistakes++; feedback.textContent=`Time's up! Correct: ${correct}`; }
+          else { feedback.textContent=`Time's up!`; }
+          if(answers) [...answers.children].forEach(b=&gt;b.disabled=true);
+          if(mode==='real'){ return lose(`Time's up! Correct was: ${correct}`); }
+          nextBtn.style.display='inline-block';
+          if(mode==='survival'){ mistakes++; lives=0; }
+        }
+      }
+
+      function onCorrect(evt, node){
+        beep(1046); streak++; bestStreak=Math.max(bestStreak, streak);
+        score += pointsEarned(); scoreEl.textContent=`Score: ${score}`; updateLiveBoard();
+        achievements.add('First Hit'); if(streak&gt;=3) achievements.add('Hot Streak'); if(streak&gt;=5) achievements.add('Blazing!');
+        triggerFlash(evt); try{ const r = node.getBoundingClientRect(); confetti.blast(r.left+r.width/2, r.top+window.scrollY); }catch{}
+        if(currentAnswersEl){
+          const btn = [...currentAnswersEl.children].find(b=&gt;b.getAttribute('data-name')===correct);
+          if(btn) btn.classList.add('correct');
+          [...currentAnswersEl.children].forEach(b=&gt;b.disabled=true);
+        }
+        nextBtn.style.display='inline-block'; clearTimer();
+        setTimeout(next, 850);
+      }
+
+      function onWrong(node, correct){
+        beep(220); streak=0; mistakes++;
+        if(node.classList) node.classList.add('wrong');
+        if(currentAnswersEl){
+          const t=[...currentAnswersEl.children].find(b=&gt;b.getAttribute('data-name')===correct);
+          if(t) t.classList.add('correct');
+          [...currentAnswersEl.children].forEach(b=&gt;b.disabled=true);
+        }
+        clearTimer();
+        if(mode==='real'){ return lose(`Wrong answer. Correct was: ${correct}`); }
+        const feedback = document.getElementById('feedback');
+        feedback.textContent=`Not quite. Correct: ${correct}`;
+        nextBtn.style.display='inline-block';
+        if(player.mode==='survival'){ lives=0; }
+      }
+
+      function pointsEarned(){
+        const base = 10;
+        const elapsed = (Date.now()-questionStart)/1000; const bonus = Math.max(0, Math.round((timeLeft - elapsed)));
+        const streakBonus = Math.min(10, Math.floor(streak/2));
+        return base + bonus + streakBonus;
+      }
+
+      function next(){
+        if(player.mode==='survival' &amp;&amp; lives&lt;=0) return finish(false);
+        idx++;
+        if(player.mode==='marathon'){ if(mistakes&gt;=3) return finish(false); }
+        renderQ();
+      }
+    }
+
+    // keyboard shortcuts
+    window.onkeydown = (e)=&gt;{
+      const k = e.key.toLowerCase();
+      if(k==='m'){ soundOn=!soundOn; LS.setSound(soundOn); return; }
+      if(!currentAnswersEl) {
+        if(k==='enter' &amp;&amp; nextBtnRef &amp;&amp; nextBtnRef.style.display!=='none') nextBtnRef.click();
+        return;
+      }
+      if(/\d/.test(k)){
+        const n = Number(k);
+        const btn = [...currentAnswersEl.children].find(b =&gt; Number(b.getAttribute('data-idx'))===n &amp;&amp; !b.disabled);
+        if(btn) btn.click();
+      } else if(k==='enter'){
+        if(nextBtnRef &amp;&amp; nextBtnRef.style.display!=='none') nextBtnRef.click();
+      } else if(k==='f'){ document.querySelector('.next-row .btn.ghost:nth-child(1)')?.click(); }
+      else if(k==='h'){ document.querySelector('.next-row .btn.ghost:nth-child(2)')?.click(); }
+      else if(k==='s'){ document.querySelector('.next-row .btn.ghost:nth-child(3)')?.click(); }
+    };
+
+    renderQ();
+  }
+
+  function clearTimer(){ if(timerId){ clearInterval(timerId); timerId=null; } }
+
+  function hintFor(q){
+    const n = q.name; const words = n.split(' ');
+    return `Hint: ${words.length} word${words.length&gt;1?'s':''}, starts with &quot;${n[0]}&quot;`;
+  }
+
+  function btnAnswer(name){ const b=el('button',{class:'btn answer','data-name':name}); b.textContent=name; return b; }
+
+  function isOpenEndedCorrect(ans, q){
+    if(!ans) return false;
+    const base = norm(q.name);
+    if(ans===base) return true;
+    const keys = KEYWORDS.get(q.number) || new Set();
+    if(keys.has(ans)) return true;
+    for(const k of keys){ if(ans.includes(k)) return true; }
+    return false;
+  }
+
+  function triggerFlash(evt){
+    const r = appCard.getBoundingClientRect();
+    const x = ((evt.clientX ?? (r.left + r.width/2)) - r.left) + 'px';
+    const y = ((evt.clientY ?? (r.top + r.height/2)) - r.top) + 'px';
+    flash.style.setProperty('--x', x); flash.style.setProperty('--y', y);
+    appCard.classList.add('flash-on'); setTimeout(()=&gt;appCard.classList.remove('flash-on'), 300);
+  }
+
+  function hsKey(name){ return `jm_hs_${name||'__guest'}`; }
+  function getHighScoreFor(name){ try{ return Number(localStorage.getItem(hsKey(name))||0); }catch{return 0} }
+  function setHighScoreFor(name,val){ try{ localStorage.setItem(hsKey(name), String(val)); }catch{} }
+
+  function updateLiveBoard(){
+    const board = LS.getBoard();
+    const preview = { name: player.name||'Guest', avatar: player.avatar, mode:(player.mode||'—'), score, time: Date.now() };
+    const temp = board.slice(0,10);
+    let inserted=false; const rows=[];
+    for(let i=0;i&lt;temp.length;i++){
+      if(!inserted &amp;&amp; score &gt; temp[i].score){ rows.push(preview); inserted=true; }
+      rows.push(temp[i]);
+    }
+    if(!inserted) rows.push(preview);
+
+    const table = document.createElement('table'); table.className='lb';
+    table.innerHTML = '&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Mode&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;';
+    const tb = document.createElement('tbody');
+    rows.slice(0,10).forEach((e,i)=&gt;{
+      const tr = document.createElement('tr'); if(e.name===preview.name) tr.className='me';
+      tr.innerHTML = `&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${e.avatar||'🍞'} ${e.name}&lt;/td&gt;&lt;td&gt;${labelMode(e.mode)}&lt;/td&gt;&lt;td&gt;${e.score}&lt;/td&gt;`;
+      tb.appendChild(tr);
+    });
+    table.appendChild(tb); lbWrap.replaceChildren(table);
+  }
+
+  function labelMode(m){
+    return m==='mc'?'MC':m==='open'?'Open':m==='survival'?'Survival':m==='marathon'?'Marathon':m==='real'?'REAL QUIZ':m;
+  }
+
+  // ===== Lose / Finish ==================================================
+  function lose(message){
+    view.replaceChildren();
+    const box = el('div',{class:'center fade-in'});
+    const h = el('h2',{},'You lost 😵');
+    const p = el('p',{}, message || 'Try again!');
+    const row = el('div',{class:'row'});
+    const retry = el('button',{class:'btn warn'}, 'Retry');
+    const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
+    retry.onclick = ()=&gt; startQuiz(player.mode, player.difficulty);
+    menu.onclick = ()=&gt; renderMenu();
+    row.append(retry, menu);
+    box.append(h,p,row);
+    view.append(box);
+  }
+
+  function finish(completedSet){
+    clearTimer();
+    const perfect = (player.mode!=='marathon' &amp;&amp; player.mode!=='real' &amp;&amp; score&gt;0 &amp;&amp; mistakes===0 &amp;&amp; score&gt;=QUESTIONS.length*10);
+    if(player.mode==='real'){
+      if(mistakes===0 &amp;&amp; completedSet){
+        const entry = { name: player.name||'Guest', avatar: player.avatar, mode: player.mode, score, time: Date.now(), streak: bestStreak };
+        LS.pushScore(entry); renderLeaderboard(player.name);
+        const per = getHighScoreFor(player.name); if(score&gt;per) setHighScoreFor(player.name, score);
+
+        view.replaceChildren();
+        const box = el('div',{class:'center fade-in'});
+        const h = el('h2',{},'✅ You passed REAL QUIZ!');
+        const p = el('p',{}, `${player.avatar||''} ${player.name||'Guest'} — Score: ${score} • Mistakes: ${mistakes}`);
+        const row = el('div',{class:'row'});
+        const again = el('button',{class:'btn'}, 'Play Again');
+        const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
+        again.onclick = ()=&gt; startQuiz('real', player.difficulty);
+        menu.onclick = ()=&gt; renderMenu();
+        row.append(again, menu);
+        box.append(h,p,row);
+        view.append(box);
+        confetti.blast(window.innerWidth/2, 0);
+        return;
+      } else {
+        return lose('REAL QUIZ requires 100% correct.');
+      }
+    }
+
+    const entry = { name: player.name||'Guest', avatar: player.avatar, mode: player.mode, score, time: Date.now(), streak: bestStreak };
+    LS.pushScore(entry); renderLeaderboard(player.name);
+    const per = getHighScoreFor(player.name); if(score&gt;per) setHighScoreFor(player.name, score);
+
+    view.replaceChildren();
+    const done = el('div',{class:'center fade-in'});
+    const stats = el('div');
+    stats.innerHTML = `&lt;h2&gt;Finished!&lt;/h2&gt;
+      &lt;p&gt;${player.avatar||''} ${player.name||'Guest'}, Score: &lt;strong&gt;${score}&lt;/strong&gt; • Best Streak: &lt;strong&gt;${bestStreak}&lt;/strong&gt; • Mistakes: &lt;strong&gt;${mistakes}&lt;/strong&gt;&lt;/p&gt;
+      &lt;div class=&quot;badges&quot; id=&quot;badgeRow&quot;&gt;&lt;/div&gt;`;
+
+    const again = el('button',{class:'btn'}, 'Play Again');
+    const menu = el('button',{class:'btn ghost'}, 'Return to Menu');
+    const share = el('button',{class:'btn pill'}, 'Share Score');
+    share.onclick = ()=&gt; navigator.clipboard?.writeText(`${player.name||'I'} scored ${score} on Jersey Mike's Quiz (${labelMode(player.mode)}). Can you beat it?`).then(()=&gt;alert('Copied!')).catch(()=&gt;alert('Copy failed.'));
+    done.append(stats, el('div',{class:'row'},''), again, menu, share);
+    view.append(done);
+
+    again.onclick = ()=&gt; startQuiz(player.mode, player.difficulty);
+    menu.onclick = ()=&gt; renderMenu();
+
+    const badgeRow = stats.querySelector('#badgeRow');
+    const list=[]; if(perfect) list.push('Perfect Menu Master'); if(bestStreak&gt;=5) list.push('Blazing Streak'); if(player.mode==='survival' &amp;&amp; mistakes===0) list.push('Untouchable');
+    for(const a of achievements) list.push(a);
+    list.forEach(txt=&gt; badgeRow.appendChild(el('span',{class:'badge-pill'}, txt)) );
+
+    if(perfect){
+      secretAch.replaceChildren(...list.map(t=&gt;{ const s=document.createElement('span'); s.textContent=t; return s; }));
+      secret.classList.add('show'); confetti.blast(window.innerWidth/2, 0);
+    }
+  }
+
+  // Boot
+  renderLeaderboard();
+  renderMenu();
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</body>
+</html>
