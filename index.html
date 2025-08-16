@@ -270,6 +270,141 @@
     display:flex; align-items:center; justify-content:space-between; gap:10px;
   }
   .brand-card strong{ font-size:16px; }
+  /* =========================
+   DARK ORANGE THEME OVERRIDES
+   ========================= */
+:root{
+  --ui:#ff8c42; /* dark orange for buttons & accents */
+  --ui-2:#e6731e; /* deeper orange for hover/secondary */
+  --brand:#ff8c42;
+  --ok:#22c55e;
+  --bad:#ef4444;
+  --bg:#1e1e1e; /* dark background behind content */
+  --chip:#ffb877; /* lighter orange chips */
+  --chip-ink:#000000; /* black chip text */
+  --bg-grad:
+    radial-gradient(1200px 800px at 10% -10%, rgba(255,140,66,.25), transparent 55%),
+    radial-gradient(900px 700px at 110% 10%, rgba(230,115,30,.25), transparent 60%);
+}
+
+/* Make all main text black for readability on light buttons */
+body, .btn, .answers .btn.answer, .answers .btn.answer::before {
+  color: #000000;
+}
+
+/* Style the answer buttons with orange backgrounds */
+.answers .btn.answer {
+  background: linear-gradient(180deg, var(--ui), var(--ui-2));
+  border: 2px solid #cc6f24;
+}
+
+/* Letter badge inside answer buttons */
+.answers .btn.answer::before {
+  background: #000000;  /* black badge background */
+  color: #ff8c42;       /* orange letter text */
+}
+/* =========================
+   ORANGE PAGE + GREEN MODES + RBGR ANSWERS
+   (place at END of your <style>)
+   ========================= */
+
+/* Page background + base text */
+:root{
+  --page-orange: #f59e0b;   /* main orange */
+  --page-orange-deep: #d97706;
+  --ok: #22c55e;
+  --bad: #ef4444;
+}
+body{
+  /* full orange (easy on eyes, not neon) */
+  background:
+    radial-gradient(1200px 900px at 20% -10%, rgba(255,255,255,.18), transparent 55%),
+    radial-gradient(1000px 800px at 120% 110%, rgba(0,0,0,.06), transparent 60%),
+    linear-gradient(180deg, var(--page-orange) 0%, var(--page-orange-deep) 100%);
+  color:#111 !important;  /* page text: solid near-black */
+}
+
+/* Kill all “greyed out” text */
+.subhead, .tiny, .sidebar h2, .lb td, .lb thead th { color:#111 !important; opacity:1 !important; }
+
+/* Cards on orange background */
+.card{
+  background: rgba(255,255,255,.92) !important;
+  border: 2px solid rgba(0,0,0,.08) !important;
+  box-shadow: 0 14px 40px rgba(0,0,0,.18) !important;
+  border-radius: 18px !important;
+}
+
+/* ---------- GAME MODE BUTTONS ---------- */
+/* Make every mode button GREEN w/ BOLD BLACK, except REAL QUIZ stays .warn */
+.btn.mode-green{
+  background: linear-gradient(180deg, #22c55e, #16a34a) !important;
+  color:#000 !important;
+  font-weight: 800 !important;
+  border: 2px solid #0d7a31 !important;
+  text-shadow: none !important;
+  box-shadow: 0 8px 18px rgba(22,163,74,.25) !important;
+}
+.btn.mode-green:hover{ filter: saturate(1.05) brightness(1.02); transform: translateY(-1px); }
+
+/* REAL QUIZ keeps its red “warn” style but with black text (visibility) */
+.btn.warn{ color:#000 !important; font-weight:800 !important; }
+
+/* ---------- IN-GAME ANSWER TILES ---------- */
+/* Base answer look (big, bold) */
+.btn.answer{
+  border-radius: 16px !important;
+  font-weight: 800 !important;
+  color:#000 !important;           /* default black text */
+  border: 2px solid rgba(0,0,0,.12) !important;
+  text-shadow: none !important;
+}
+
+/* Four color classes we will assign randomly from JS (R, B, G, R) */
+.opt-red { 
+  background: linear-gradient(180deg, #ef4444, #dc2626) !important; 
+  color:#fff !important;
+  border-color:#b91c1c !important;
+}
+
+.opt-red2 { 
+  background: linear-gradient(180deg, #facc15, #eab308) !important; /* yellow gradient */
+  color:#000 !important;  /* black text for visibility */
+  border-color:#ca8a04 !important;
+}
+
+.opt-blue{ 
+  background: linear-gradient(180deg, #3b82f6, #2563eb) !important; 
+  color:#fff !important;           /* white text on blue */
+  border-color:#1d4ed8 !important;
+}
+.opt-green{ 
+  background: linear-gradient(180deg, #22c55e, #16a34a) !important; 
+  color:#000 !important;           /* black text on green (per your request) */
+  border-color:#0d7a31 !important;
+}
+
+/* Correct/Wrong highlight still clear on top of colors */
+.answer.correct{
+  outline: 3px solid #16a34a !important;
+  box-shadow: 0 0 0 4px rgba(22,163,74,.25) !important;
+}
+.answer.wrong{
+  outline: 3px solid #b91c1c !important;
+  box-shadow: 0 0 0 4px rgba(185,28,28,.25) !important;
+}
+
+/* Timer bar darker for contrast */
+.meter{ background:#111 !important; border:2px solid rgba(0,0,0,.2) !important; }
+.meter > b{ background: linear-gradient(90deg, #16a34a, #eab308, #ef4444) !important; }
+
+/* Inputs and selects readable on orange page */
+input[type="text"], select{
+  background:#fff !important;
+  color:#000 !important;
+  border:2px solid rgba(0,0,0,.15) !important;
+}
+
 </style>
 </head>
 <body>
@@ -303,7 +438,7 @@
         </p>
         <div id="view" class="fade-in"></div>
         <p class="tiny" style="margin-top:8px;opacity:.8">
-          Shortcuts: 1-9 answer • Enter submit/next • F 50/50 • H Hint • S Skip • M Sound
+          Shortcuts: coming soon
         </p>
       </section>
 
@@ -353,7 +488,8 @@
     { number: 13, name: "The Original Italian" },
     { number: 14, name: "The Veggie" },
     { number: 17, name: "Mike's Famous Philly" },
-    { number: 26, name: "Bacon Ranch Chicken Cheese Steak" },
+    { number: 26, name: "Chicken Bacon Ranch Cheese Steak" },
+    { number: 31, name: "California Chicken Cheese Steak" },
     { number: 42, name: "Chipotle Chicken Cheese Steak" },
     { number: 43, name: "Chipotle Cheese Steak" }
   ];
@@ -595,6 +731,8 @@
     const sur = el('button',{class:'btn ghost'}, '❤️ Survival');
     const mar = el('button',{class:'btn ghost'}, '∞ Marathon');
     const real = el('button',{class:'btn warn'}, '💀 REAL QUIZ');
+// Make every mode button green + bold black (except REAL QUIZ leaves .warn)
+[mc, oe, sur, mar].forEach(b => b.classList.add('mode-green'));
 
     /* ADDED: toppings modes */
     const coldtops = el('button',{class:'btn'}, '🥪 Cold Sub Toppings');
@@ -746,12 +884,20 @@
         }
 
         answers = el('div',{class:'answers', role:'group', 'aria-label':'Answer choices'});
-        options.forEach((name, i)=> {
-          const b = btnAnswer(name);
-          b.setAttribute('data-idx', String(i+1));
-          b.title = `Answer ${i+1}`;
-          answers.appendChild(b);
-        });
+        // color sequence: red, blue, green, red (duplicated red per your request)
+const colorSeq = shuffle(['opt-red','opt-blue','opt-green','opt-red2']);
+
+options.forEach((name, i)=> {
+  const b = btnAnswer(name);
+  b.setAttribute('data-idx', String(i+1));
+  // optional: keep your letters if you want
+  b.dataset.letter = 'ABCD'[i] || '';
+  // assign randomized color class
+  b.classList.add(colorSeq[i % colorSeq.length]);
+  b.title = `Answer ${i+1}`;
+  answers.appendChild(b);
+});
+
         currentAnswersEl = answers;
 
         answers.addEventListener('click',(e)=>{
@@ -891,15 +1037,23 @@
         if(k==='enter' && nextBtnRef && nextBtnRef.style.display!=='none') nextBtnRef.click();
         return;
       }
-      if(/\d/.test(k)){
-        const n = Number(k);
-        const btn = [...currentAnswersEl.children].find(b => Number(b.getAttribute('data-idx'))===n && !b.disabled);
-        if(btn) btn.click();
-      } else if(k==='enter'){
+      if(e.code === "F1"){
+  currentAnswersEl.children[0]?.click();
+} 
+else if(e.code === "F2"){
+  currentAnswersEl.children[1]?.click();
+} 
+else if(e.code === "F3"){
+  currentAnswersEl.children[2]?.click();
+} 
+else if(e.code === "F4"){
+  currentAnswersEl.children[3]?.click();
+}
+ else if(k==='F1'){
         if(nextBtnRef && nextBtnRef.style.display!=='none') nextBtnRef.click();
-      } else if(k==='f'){ document.querySelector('.next-row .btn.ghost:nth-child(1)')?.click(); }
-      else if(k==='h'){ document.querySelector('.next-row .btn.ghost:nth-child(2)')?.click(); }
-      else if(k==='s'){ document.querySelector('.next-row .btn.ghost:nth-child(3)')?.click(); }
+      } else if(k==='F2'){ document.querySelector('.next-row .btn.ghost:nth-child(1)')?.click(); }
+      else if(k==='F3'){ document.querySelector('.next-row .btn.ghost:nth-child(2)')?.click(); }
+      else if(k==='F4'){ document.querySelector('.next-row .btn.ghost:nth-child(3)')?.click(); }
     };
 
     renderQ();
